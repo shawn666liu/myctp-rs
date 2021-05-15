@@ -1,0 +1,18 @@
+[package]
+edition = "2018"
+name = "myctp"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "*"
+encoding = "*"
+memchr = "*"
+simple-error = "*"
+time = "0.1.43"
+
+[build-dependencies]
+bindgen = "*"
+cc = "*"
+encoding = "*"

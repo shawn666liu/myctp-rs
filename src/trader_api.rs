@@ -1,0 +1,325 @@
+use crate::common::*;
+use crate::ctp::*;
+pub use std::ffi::c_void;
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int};
+use std::rc::Rc;
+
+pub struct TraderApi {
+    api_ptr: *mut c_void,
+    holder: Option<TraitsHolder>,
+}
+
+impl TraderApi {
+    pub fn new(flow_path: CString) -> Self {
+        let flow_path_ptr = flow_path.into_raw();
+        let api_ptr = unsafe { TdCreateApi(flow_path_ptr) };
+        let _ = unsafe { CString::from_raw(flow_path_ptr) };
+        let result = TraderApi {
+            api_ptr,
+            holder: None,
+        };
+        unsafe {
+            TdRegisterCallback(
+                api_ptr,
+                Some(cb_on_err_rtn_event),
+                Some(cb_front_event),
+                Some(cb_rtn_rsp_event),
+                Some(cb_rtn_event),
+                api_ptr,
+            );
+        }
+        result
+    }
+
+    pub fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
+        let holder = TraitsHolder { spi };
+        let _ = self.holder.take();
+        self.holder = Some(holder);
+        if let Some(p) = &self.holder {
+            let raw_ptr = p as *const TraitsHolder as *mut c_void;
+            unsafe { TdSetObject(self.api_ptr, raw_ptr) };
+        }
+    }
+
+    pub fn init(&mut self) {
+        assert!(self.holder.is_some());
+        unsafe { TdInit(self.api_ptr) };
+    }
+
+    // fn join(&mut self) -> ApiResult {
+    //     from_api_return_to_api_result(unsafe { TdJoin(self.api_ptr) })
+    // }
+
+    pub fn get_trading_day<'a>(&mut self) -> &'a CStr {
+        let trading_day_cstr = unsafe { TdGetTradingDay(self.api_ptr) };
+        unsafe { CStr::from_ptr(trading_day_cstr) }
+    }
+
+    pub fn register_front(&mut self, front_socket_address: CString) {
+        let front_socket_address_ptr = front_socket_address.into_raw();
+        unsafe { TdRegisterFront(self.api_ptr, front_socket_address_ptr) };
+        let front_socket_address = unsafe { CString::from_raw(front_socket_address_ptr) };
+        drop(front_socket_address);
+    }
+
+    pub fn register_name_server(&mut self, name_server: CString) {
+        let name_server_ptr = name_server.into_raw();
+        unsafe { TdRegisterNameServer(self.api_ptr, name_server_ptr) };
+        let name_server = unsafe { CString::from_raw(name_server_ptr) };
+        drop(name_server);
+    }
+
+    pub fn register_fens_user_info(&mut self, fens_user_info: &CThostFtdcFensUserInfoField) {
+        unsafe { TdRegisterFensUserInfo(self.api_ptr, fens_user_info) };
+    }
+
+    pub fn subscribe_private_topic(&mut self, resume_type: ResumeType) {
+        unsafe { TdSubscribePrivateTopic(self.api_ptr, resume_type.into()) };
+    }
+
+    pub fn subscribe_public_topic(&mut self, resume_type: ResumeType) {
+        unsafe { TdSubscribePublicTopic(self.api_ptr, resume_type.into()) };
+    }
+
+    pub fn req_authenticate(
+        &mut self,
+        req_authenticate: &CThostFtdcReqAuthenticateField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqAuthenticate(self.api_ptr, req_authenticate, request_id)
+        })
+    }
+
+    pub fn req_user_login(
+        &mut self,
+        req_user_login: &CThostFtdcReqUserLoginField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqUserLogin(self.api_ptr, req_user_login, request_id)
+        })
+    }
+
+    pub fn req_user_logout(
+        &mut self,
+        req_user_logout: &CThostFtdcUserLogoutField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqUserLogout(self.api_ptr, req_user_logout, request_id)
+        })
+    }
+
+    pub fn req_user_password_update(
+        &mut self,
+        req_user_password_update: &CThostFtdcUserPasswordUpdateField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqUserPasswordUpdate(self.api_ptr, req_user_password_update, request_id)
+        })
+    }
+
+    pub fn req_order_insert(
+        &mut self,
+        input_order: &CThostFtdcInputOrderField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqOrderInsert(self.api_ptr, input_order, request_id)
+        })
+    }
+
+    pub fn req_order_action(
+        &mut self,
+        input_order_action: &CThostFtdcInputOrderActionField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqOrderAction(self.api_ptr, input_order_action, request_id)
+        })
+    }
+
+    pub fn req_settlement_info_confirm(
+        &mut self,
+        settlement_info_confirm: &CThostFtdcSettlementInfoConfirmField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqSettlementInfoConfirm(self.api_ptr, settlement_info_confirm, request_id)
+        })
+    }
+
+    pub fn req_qry_order(
+        &mut self,
+        qry_order: &CThostFtdcQryOrderField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe { TdReqQryOrder(self.api_ptr, qry_order, request_id) })
+    }
+
+    pub fn req_qry_trade(
+        &mut self,
+        qry_trade: &CThostFtdcQryTradeField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe { TdReqQryTrade(self.api_ptr, qry_trade, request_id) })
+    }
+
+    pub fn req_qry_investor_position(
+        &mut self,
+        qry_investor_position: &CThostFtdcQryInvestorPositionField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryInvestorPosition(self.api_ptr, qry_investor_position, request_id)
+        })
+    }
+
+    pub fn req_qry_trading_account(
+        &mut self,
+        qry_trading_account: &CThostFtdcQryTradingAccountField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryTradingAccount(self.api_ptr, qry_trading_account, request_id)
+        })
+    }
+
+    pub fn req_qry_investor(
+        &mut self,
+        qry_investor: &CThostFtdcQryInvestorField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryInvestor(self.api_ptr, qry_investor, request_id)
+        })
+    }
+
+    pub fn req_qry_trading_code(
+        &mut self,
+        qry_trading_code: &CThostFtdcQryTradingCodeField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryTradingCode(self.api_ptr, qry_trading_code, request_id)
+        })
+    }
+
+    pub fn req_qry_instrument_margin_rate(
+        &mut self,
+        qry_instrument_margin_rate: &CThostFtdcQryInstrumentMarginRateField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryInstrumentMarginRate(self.api_ptr, qry_instrument_margin_rate, request_id)
+        })
+    }
+
+    pub fn req_qry_instrument_commission_rate(
+        &mut self,
+        qry_instrument_commission_rate: &CThostFtdcQryInstrumentCommissionRateField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryInstrumentCommissionRate(
+                self.api_ptr,
+                qry_instrument_commission_rate,
+                request_id,
+            )
+        })
+    }
+
+    pub fn req_qry_exchange(
+        &mut self,
+        qry_exchange: &CThostFtdcQryExchangeField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryExchange(self.api_ptr, qry_exchange, request_id)
+        })
+    }
+
+    pub fn req_qry_product(
+        &mut self,
+        qry_product: &CThostFtdcQryProductField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryProduct(self.api_ptr, qry_product, request_id)
+        })
+    }
+
+    pub fn req_qry_instrument(
+        &mut self,
+        qry_instrument: &CThostFtdcQryInstrumentField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryInstrument(self.api_ptr, qry_instrument, request_id)
+        })
+    }
+
+    pub fn req_qry_settlement_info(
+        &mut self,
+        qry_settlement_info: &CThostFtdcQrySettlementInfoField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQrySettlementInfo(self.api_ptr, qry_settlement_info, request_id)
+        })
+    }
+
+    pub fn req_qry_settlement_info_confirm(
+        &mut self,
+        qry_settlement_info_confirm: &CThostFtdcQrySettlementInfoConfirmField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQrySettlementInfoConfirm(self.api_ptr, qry_settlement_info_confirm, request_id)
+        })
+    }
+
+    pub fn req_qry_exchange_margin_rate(
+        &mut self,
+        qry_exchange_margin_rate: &CThostFtdcQryExchangeMarginRateField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryExchangeMarginRate(self.api_ptr, qry_exchange_margin_rate, request_id)
+        })
+    }
+
+    pub fn req_qry_exchange_margin_rate_adjust(
+        &mut self,
+        qry_exchange_margin_rate_adjust: &CThostFtdcQryExchangeMarginRateAdjustField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryExchangeMarginRateAdjust(
+                self.api_ptr,
+                qry_exchange_margin_rate_adjust,
+                request_id,
+            )
+        })
+    }
+
+    pub fn req_qry_exchange_rate(
+        &mut self,
+        qry_exchange_rate: &CThostFtdcQryExchangeRateField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryExchangeRate(self.api_ptr, qry_exchange_rate, request_id)
+        })
+    }
+}
+
+impl Drop for TraderApi {
+    fn drop(&mut self) {
+        unsafe { TdDestroyApi(self.api_ptr) };
+        println!("TraderApi dropped");
+    }
+}
