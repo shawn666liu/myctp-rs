@@ -8935,7 +8935,6 @@ pub type CbOnErrRtnEvent = ::std::option::Option<
         evt: EnumOnErrRtnEvent,
         pParam: *mut ::std::os::raw::c_void,
         pRspInfo: *mut ::std::os::raw::c_void,
-        sizeof_param: ::std::os::raw::c_uint,
     ),
 >;
 pub type CbOnFrontEvent = ::std::option::Option<
@@ -8953,7 +8952,6 @@ pub type CbOnRspEvent = ::std::option::Option<
         pRspInfo: *mut ::std::os::raw::c_void,
         nRequestID: ::std::os::raw::c_int,
         bIsLast: bool,
-        sizeof_param: ::std::os::raw::c_uint,
     ),
 >;
 pub type CbOnRtnEvent = ::std::option::Option<
@@ -8961,7 +8959,6 @@ pub type CbOnRtnEvent = ::std::option::Option<
         pObject: *mut ::std::os::raw::c_void,
         evt: EnumOnRtnEvent,
         pParam: *mut ::std::os::raw::c_void,
-        sizeof_param: ::std::os::raw::c_uint,
     ),
 >;
 extern "C" {

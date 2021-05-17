@@ -9,7 +9,7 @@ use std::rc::Rc;
 
 struct Spi {}
 impl CtpSpiTrait for Spi {
-    fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void, sizeof_param: u32) {
+    fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void) {
         let md = param as *const CThostFtdcDepthMarketDataField;
         if !md.is_null() {
             let md = unsafe { &*md };

@@ -11,7 +11,6 @@ pub trait CtpSpiTrait {
         evt: EnumOnErrRtnEvent,
         param: *mut c_void,
         psp_info: *mut c_void,
-        sizeof_param: u32,
     ) {
         println!("==> on_err_rtn_event, {:?}", evt);
     }
@@ -20,7 +19,7 @@ pub trait CtpSpiTrait {
         println!("==> on_front_event, {:?}, reason {}", evt, reason);
     }
 
-    fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void, sizeof_param: u32) {
+    fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void) {
         println!("==> on_rtn_event, {:?}", evt);
     }
 
@@ -31,7 +30,6 @@ pub trait CtpSpiTrait {
         rsp_info: *mut c_void,
         request_id: i32,
         is_last: bool,
-        sizeof_param: u32,
     ) {
         println!(
             "==> on_rtn_rsp_event, {:?}, req_id {}, last? {}",
@@ -55,12 +53,10 @@ pub(crate) extern "C" fn cb_on_err_rtn_event(
     evt: EnumOnErrRtnEvent,
     param: *mut c_void,
     rsp_info: *mut c_void,
-    sizeof_param: c_uint,
 ) {
     let r = object as *mut TraitsHolder;
     unsafe {
-        (*r).spi
-            .on_err_rtn_event(evt, param, rsp_info, sizeof_param);
+        (*r).spi.on_err_rtn_event(evt, param, rsp_info);
     }
 }
 
@@ -78,12 +74,11 @@ pub(crate) extern "C" fn cb_rtn_rsp_event(
     rsp_info: *mut c_void,
     request_id: c_int,
     is_last: bool,
-    sizeof_param: c_uint,
 ) {
     let r = object as *mut TraitsHolder;
     unsafe {
         (*r).spi
-            .on_rtn_rsp_event(evt, param, rsp_info, request_id, is_last, sizeof_param);
+            .on_rtn_rsp_event(evt, param, rsp_info, request_id, is_last);
     }
 }
 
@@ -91,11 +86,10 @@ pub(crate) extern "C" fn cb_rtn_event(
     object: *mut c_void,
     evt: EnumOnRtnEvent,
     param: *mut c_void,
-    sizeof_param: c_uint,
 ) {
     let r = object as *mut TraitsHolder;
     unsafe {
-        (*r).spi.on_rtn_event(evt, param, sizeof_param);
+        (*r).spi.on_rtn_event(evt, param);
     }
 }
 //#end region
