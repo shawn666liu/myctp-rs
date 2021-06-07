@@ -33,7 +33,7 @@ fn main() {
         .header("./src/wrapper.hpp")
         .clang_arg("-Iftdc2c_ctp")
         .rustified_enum(".*")
-        .derive_debug(false)
+        .derive_debug(true)
         .derive_default(true)
         .layout_tests(false)
         .generate_comments(false)
