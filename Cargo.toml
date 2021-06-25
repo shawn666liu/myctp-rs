@@ -10,7 +10,7 @@ anyhow = "*"
 encoding = "*"
 memchr = "*"
 simple-error = "*"
-time = "0.1.43"
+time = "*"
 
 [build-dependencies]
 bindgen = "*"

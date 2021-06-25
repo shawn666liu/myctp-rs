@@ -3,12 +3,10 @@
 
 use std::env;
 use std::io::{Read, Write};
-use std::path::Path;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
-const SO_FILENAME: &str = "thostmduserapi_se.so";
-
-fn main() {
+#[cfg(unix)]
+fn cc_build() {
     cc::Build::new()
         .file("./ftdc2c_ctp/ftdc2c_ctp.cpp")
         .cpp(true)
@@ -19,6 +17,53 @@ fn main() {
         .compile("ftdc2c_ctp");
 
     println!("cargo:rustc-link-search={}", "ftdc2c_ctp/api/linux");
+}
+
+#[cfg(unix)]
+fn copy_lib_file() {}
+
+#[cfg(windows)]
+fn cc_build() {
+    cc::Build::new()
+        .file("./ftdc2c_ctp/ftdc2c_ctp.cpp")
+        .cpp(true)
+        .warnings(false)
+        // .flag("-Wno-unused-parameter")
+        // .flag("-Wno-attributes")
+        .flag("-std=c++11")
+        .compile("ftdc2c_ctp");
+
+    println!("cargo:rustc-link-search={}", "ftdc2c_ctp/api/win_x64");
+}
+
+#[cfg(windows)]
+fn copy_lib_files() {
+    let out_dir = std::env::var("OUT_DIR").unwrap();
+    println!("cargo:rustc-link-search=native={}", out_dir);
+
+    let dll = "thostmduserapi_se.dll";
+    let target = Path::new(&out_dir).join(dll);
+    if !target.exists() {
+        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", dll), &target)
+            .expect(&format!("failed to copy {} to outdir", dll));
+    }
+
+    let dll = "thosttraderapi_se.dll";
+    let target = Path::new(&out_dir).join(dll);
+    if !target.exists() {
+        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", dll), &target)
+            .expect(&format!("failed to copy {} to outdir", dll));
+    }
+
+    // println!(
+    //     "cargo:resource={}",
+    //     target.to_str().expect("Path to str failed")
+    // );
+}
+
+fn main() {
+    cc_build();
+
     println!("cargo:rustc-link-lib=dylib=thostmduserapi_se");
     println!("cargo:rustc-link-lib=dylib=thosttraderapi_se");
 
@@ -28,6 +73,7 @@ fn main() {
     println!("cargo:rerun-if-changed=ftdc2c_ctp/quoter.h");
     println!("cargo:rerun-if-changed=ftdc2c_ctp/trader.h");
     println!("cargo:rerun-if-changed=src/wrapper.hpp");
+    println!("cargo:rerun-if-changed=build.rs");
 
     let binding = bindgen::builder()
         .header("./src/wrapper.hpp")
@@ -65,24 +111,5 @@ fn main() {
         .write_all(output.as_bytes())
         .expect("Couldn't write bindings!");
 
-    // let out_dir = std::env::var("OUT_DIR").unwrap();
-    // let current_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
-    // let so_symlink_string = format!("{}/lib{}", out_dir, SO_FILENAME);
-    // let so_symlink = std::path::Path::new(&so_symlink_string);
-    // if so_symlink.exists() {
-    //     std::fs::remove_file(so_symlink).expect("symlink exists, but failed to remove it");
-    // }
-    // std::os::unix::fs::symlink(
-    //     &format!("{}/ftdc2c_ctp/api/linux/{}", current_dir, SO_FILENAME),
-    //     so_symlink,
-    // )
-    // .expect("failed to create new symlink");
-    // println!("cargo:rustc-link-search=native={}", out_dir);
-    // let target_so = format!("{}/{}", out_dir, SO_FILENAME);
-    // std::fs::copy(
-    //     &format!("{}/ftdc2c_ctp/api/linux/{}", current_dir, SO_FILENAME),
-    //     &target_so,
-    // )
-    // .expect("failed to copy so to outdir");
-    // println!("cargo:resource={}", target_so);
+    copy_lib_files();
 }
