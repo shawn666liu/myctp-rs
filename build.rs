@@ -20,7 +20,24 @@ fn cc_build() {
 }
 
 #[cfg(unix)]
-fn copy_lib_file() {}
+fn copy_lib_file() {
+    let out_dir = std::env::var("OUT_DIR").unwrap();
+    println!("cargo:rustc-link-search=native={}", out_dir);
+
+    let dll = "thostmduserapi_se.so";
+    let target = Path::new(&out_dir).join(dll);
+    if !target.exists() {
+        std::fs::copy(format!("./ftdc2c_ctp/api/linux/{}", dll), &target)
+            .expect(&format!("failed to copy {} to outdir", dll));
+    }
+
+    let dll = "thosttraderapi_se.so";
+    let target = Path::new(&out_dir).join(dll);
+    if !target.exists() {
+        std::fs::copy(format!("./ftdc2c_ctp/api/linux/{}", dll), &target)
+            .expect(&format!("failed to copy {} to outdir", dll));
+    }
+}
 
 #[cfg(windows)]
 fn cc_build() {
