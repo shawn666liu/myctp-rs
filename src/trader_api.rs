@@ -7,43 +7,48 @@ use std::rc::Rc;
 
 pub struct TraderApi {
     api_ptr: *mut c_void,
-    holder: Option<TraitsHolder>,
+    holder: TraitsHolder,
 }
 
+unsafe impl Send for TraderApi {}
+
 impl TraderApi {
-    pub fn new(flow_path: CString) -> Self {
-        let flow_path_ptr = flow_path.into_raw();
+    pub fn new(flow_path: &str, spi: Box<dyn CtpSpiTrait>) -> Self {
+        let flow_path1 = std::ffi::CString::new(flow_path).unwrap();
+        let flow_path_ptr = flow_path1.into_raw();
         let api_ptr = unsafe { TdCreateApi(flow_path_ptr) };
         let _ = unsafe { CString::from_raw(flow_path_ptr) };
         let result = TraderApi {
             api_ptr,
-            holder: None,
+            holder: TraitsHolder { spi },
         };
         unsafe {
+            // register callbacks and spi
+            let spi_raw_ptr = &result.holder as *const TraitsHolder as *mut c_void;
             TdRegisterCallback(
                 api_ptr,
                 Some(cb_on_err_rtn_event),
                 Some(cb_front_event),
                 Some(cb_rtn_rsp_event),
                 Some(cb_rtn_event),
-                api_ptr,
+                spi_raw_ptr,
             );
         }
         result
     }
 
-    pub fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
-        let holder = TraitsHolder { spi };
-        let _ = self.holder.take();
-        self.holder = Some(holder);
-        if let Some(p) = &self.holder {
-            let raw_ptr = p as *const TraitsHolder as *mut c_void;
-            unsafe { TdSetObject(self.api_ptr, raw_ptr) };
-        }
-    }
+    // pub fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
+    //     let holder = TraitsHolder { spi };
+    //     let _ = self.holder.take();
+    //     self.holder = Some(holder);
+    //     if let Some(p) = &self.holder {
+    //         let raw_ptr = p as *const TraitsHolder as *mut c_void;
+    //         unsafe { TdSetObject(self.api_ptr, raw_ptr) };
+    //     }
+    // }
 
     pub fn init(&mut self) {
-        assert!(self.holder.is_some());
+        // assert!(self.holder.is_some());
         unsafe { TdInit(self.api_ptr) };
     }
 
@@ -51,39 +56,39 @@ impl TraderApi {
     //     from_api_return_to_api_result(unsafe { TdJoin(self.api_ptr) })
     // }
 
-    pub fn get_trading_day<'a>(&mut self) -> &'a CStr {
+    pub fn get_trading_day<'a>(&self) -> &'a CStr {
         let trading_day_cstr = unsafe { TdGetTradingDay(self.api_ptr) };
         unsafe { CStr::from_ptr(trading_day_cstr) }
     }
 
-    pub fn register_front(&mut self, front_socket_address: CString) {
+    pub fn register_front(&self, front_socket_address: CString) {
         let front_socket_address_ptr = front_socket_address.into_raw();
         unsafe { TdRegisterFront(self.api_ptr, front_socket_address_ptr) };
         let front_socket_address = unsafe { CString::from_raw(front_socket_address_ptr) };
         drop(front_socket_address);
     }
 
-    pub fn register_name_server(&mut self, name_server: CString) {
+    pub fn register_name_server(&self, name_server: CString) {
         let name_server_ptr = name_server.into_raw();
         unsafe { TdRegisterNameServer(self.api_ptr, name_server_ptr) };
         let name_server = unsafe { CString::from_raw(name_server_ptr) };
         drop(name_server);
     }
 
-    pub fn register_fens_user_info(&mut self, fens_user_info: &CThostFtdcFensUserInfoField) {
+    pub fn register_fens_user_info(&self, fens_user_info: &CThostFtdcFensUserInfoField) {
         unsafe { TdRegisterFensUserInfo(self.api_ptr, fens_user_info) };
     }
 
-    pub fn subscribe_private_topic(&mut self, resume_type: ResumeType) {
+    pub fn subscribe_private_topic(&self, resume_type: ResumeType) {
         unsafe { TdSubscribePrivateTopic(self.api_ptr, resume_type.into()) };
     }
 
-    pub fn subscribe_public_topic(&mut self, resume_type: ResumeType) {
+    pub fn subscribe_public_topic(&self, resume_type: ResumeType) {
         unsafe { TdSubscribePublicTopic(self.api_ptr, resume_type.into()) };
     }
 
     pub fn req_authenticate(
-        &mut self,
+        &self,
         req_authenticate: &CThostFtdcReqAuthenticateField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -93,7 +98,7 @@ impl TraderApi {
     }
 
     pub fn req_user_login(
-        &mut self,
+        &self,
         req_user_login: &CThostFtdcReqUserLoginField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -103,7 +108,7 @@ impl TraderApi {
     }
 
     pub fn req_user_logout(
-        &mut self,
+        &self,
         req_user_logout: &CThostFtdcUserLogoutField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -113,7 +118,7 @@ impl TraderApi {
     }
 
     pub fn req_user_password_update(
-        &mut self,
+        &self,
         req_user_password_update: &CThostFtdcUserPasswordUpdateField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -123,7 +128,7 @@ impl TraderApi {
     }
 
     pub fn req_order_insert(
-        &mut self,
+        &self,
         input_order: &CThostFtdcInputOrderField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -133,7 +138,7 @@ impl TraderApi {
     }
 
     pub fn req_order_action(
-        &mut self,
+        &self,
         input_order_action: &CThostFtdcInputOrderActionField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -143,7 +148,7 @@ impl TraderApi {
     }
 
     pub fn req_settlement_info_confirm(
-        &mut self,
+        &self,
         settlement_info_confirm: &CThostFtdcSettlementInfoConfirmField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -153,7 +158,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_order(
-        &mut self,
+        &self,
         qry_order: &CThostFtdcQryOrderField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -161,7 +166,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_trade(
-        &mut self,
+        &self,
         qry_trade: &CThostFtdcQryTradeField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -169,7 +174,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_investor_position(
-        &mut self,
+        &self,
         qry_investor_position: &CThostFtdcQryInvestorPositionField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -179,7 +184,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_trading_account(
-        &mut self,
+        &self,
         qry_trading_account: &CThostFtdcQryTradingAccountField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -189,7 +194,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_investor(
-        &mut self,
+        &self,
         qry_investor: &CThostFtdcQryInvestorField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -199,7 +204,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_trading_code(
-        &mut self,
+        &self,
         qry_trading_code: &CThostFtdcQryTradingCodeField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -209,7 +214,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_instrument_margin_rate(
-        &mut self,
+        &self,
         qry_instrument_margin_rate: &CThostFtdcQryInstrumentMarginRateField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -219,7 +224,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_instrument_commission_rate(
-        &mut self,
+        &self,
         qry_instrument_commission_rate: &CThostFtdcQryInstrumentCommissionRateField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -233,7 +238,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_exchange(
-        &mut self,
+        &self,
         qry_exchange: &CThostFtdcQryExchangeField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -243,7 +248,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_product(
-        &mut self,
+        &self,
         qry_product: &CThostFtdcQryProductField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -253,7 +258,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_instrument(
-        &mut self,
+        &self,
         qry_instrument: &CThostFtdcQryInstrumentField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -263,7 +268,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_settlement_info(
-        &mut self,
+        &self,
         qry_settlement_info: &CThostFtdcQrySettlementInfoField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -273,7 +278,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_settlement_info_confirm(
-        &mut self,
+        &self,
         qry_settlement_info_confirm: &CThostFtdcQrySettlementInfoConfirmField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -283,7 +288,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_exchange_margin_rate(
-        &mut self,
+        &self,
         qry_exchange_margin_rate: &CThostFtdcQryExchangeMarginRateField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -293,7 +298,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_exchange_margin_rate_adjust(
-        &mut self,
+        &self,
         qry_exchange_margin_rate_adjust: &CThostFtdcQryExchangeMarginRateAdjustField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -307,7 +312,7 @@ impl TraderApi {
     }
 
     pub fn req_qry_exchange_rate(
-        &mut self,
+        &self,
         qry_exchange_rate: &CThostFtdcQryExchangeRateField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {

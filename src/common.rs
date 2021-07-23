@@ -5,7 +5,7 @@ use std::os::raw::{c_char, c_int, c_uint};
 use std::rc::Rc;
 
 /// 交易接口和行情接口都实现所有的trait
-pub trait CtpSpiTrait {
+pub trait CtpSpiTrait: Send {
     fn on_err_rtn_event(
         &mut self,
         evt: EnumOnErrRtnEvent,
@@ -40,6 +40,13 @@ pub trait CtpSpiTrait {
 
 pub fn cstring_slice_to_char_star_vec(cstring_vec: &[CString]) -> Vec<*const c_char> {
     cstring_vec.iter().map(|cstring| cstring.as_ptr()).collect()
+}
+
+pub fn str_slice_to_cstring_vec(str_vec: &[&str]) -> Vec<CString> {
+    str_vec
+        .iter()
+        .map(|element| CString::new(*element).expect("CString::new failed"))
+        .collect()
 }
 
 #[repr(C)]

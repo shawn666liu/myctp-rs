@@ -19,11 +19,11 @@ impl CtpSpiTrait for Spi {
 }
 
 fn main() {
-    let flow_path = ::std::ffi::CString::new("").unwrap();
-    let mut md_api = MDApi::new(flow_path, false, false);
-    let spi = Box::new(Spi {});
-    md_api.register_spi(spi);
-    md_api.register_front(std::ffi::CString::new("tcp://180.168.146.187:10111").unwrap());
+    let md_api = MDApi::new("", false, false, Box::new(Spi {}));
+    // let spi = Box::new(Spi {});
+    // md_api.register_spi(spi);
+    // md_api.register_front("tcp://180.168.146.187:10111");
+    md_api.register_front("tcp://101.230.192.179:42213");
     println!("Hello ctp");
     md_api.init();
     std::thread::sleep(std::time::Duration::from_secs(2));
@@ -32,12 +32,7 @@ fn main() {
         Err(err) => println!("req_user_login err: {:?}", err),
     };
     std::thread::sleep(std::time::Duration::from_secs(1));
-    let instrument_ids = vec![
-        CString::new("IF2106").unwrap(),
-        CString::new("au2106").unwrap(),
-        CString::new("m2109").unwrap(),
-        CString::new("CF109").unwrap(),
-    ];
+    let instrument_ids = vec!["IF2106", "au2109", "m2109", "CF109"];
     match md_api.subscribe_market_data(&instrument_ids.clone()) {
         Ok(()) => println!("subscribe_market_data ok"),
         Err(err) => println!("subscribe_market_data err: {:?}", err),

@@ -7,100 +7,116 @@ use std::rc::Rc;
 
 pub struct MDApi {
     api_ptr: *mut c_void,
-    holder: Option<TraitsHolder>,
+    holder: TraitsHolder,
 }
 
+unsafe impl Send for MDApi {}
+
 impl MDApi {
-    pub fn new(flow_path: CString, use_udp: bool, use_multicast: bool) -> Self {
-        let flow_path_ptr = flow_path.into_raw();
+    pub fn new(
+        flow_path: &str,
+        use_udp: bool,
+        use_multicast: bool,
+        spi: Box<dyn CtpSpiTrait>,
+    ) -> Self {
+        let flow_path1 = std::ffi::CString::new(flow_path).expect("CString::new failed");
+        let flow_path_ptr = flow_path1.into_raw();
         let api_ptr = unsafe { MdCreateApi(flow_path_ptr, use_udp, use_multicast) };
         let _ = unsafe { CString::from_raw(flow_path_ptr) };
         let result = MDApi {
             api_ptr,
-            holder: None,
+            holder: TraitsHolder { spi },
         };
         unsafe {
+            // register callbacks and spi
+            let spi_raw_ptr = &result.holder as *const TraitsHolder as *mut c_void;
             MdRegisterCallback(
                 api_ptr,
                 Some(cb_front_event),
                 Some(cb_rtn_rsp_event),
                 Some(cb_rtn_event),
-                api_ptr,
+                spi_raw_ptr,
             );
         }
         result
     }
 
-    pub fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
-        let holder = TraitsHolder { spi };
-        let _ = self.holder.take();
-        self.holder = Some(holder);
-        if let Some(p) = &self.holder {
-            let raw_ptr = p as *const TraitsHolder as *mut c_void;
-            unsafe { MdSetObject(self.api_ptr, raw_ptr) };
-        }
-    }
+    // fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
+    //     let holder = TraitsHolder { spi };
+    //     let _ = self.holder.take();
+    //     self.holder = Some(holder);
+    //     if let Some(p) = &self.holder {
+    //         let raw_ptr = p as *const TraitsHolder as *mut c_void;
+    //         unsafe { MdSetObject(self.api_ptr, raw_ptr) };
+    //     }
+    // }
 
-    pub fn init(&mut self) {
-        assert!(self.holder.is_some());
+    pub fn init(&self) {
+        // assert!(self.holder.is_some());
         unsafe {
             MdInit(self.api_ptr);
         }
     }
 
-    pub fn get_trading_day<'a>(&mut self) -> &'a CStr {
+    pub fn get_trading_day<'a>(&self) -> &'a CStr {
         let trading_day_cstr = unsafe { MdGetTradingDay(self.api_ptr) };
         unsafe { CStr::from_ptr(trading_day_cstr) }
     }
 
-    pub fn register_front(&mut self, front_socket_address: CString) {
-        let front_socket_address_ptr = front_socket_address.into_raw();
+    pub fn register_front(&self, front_address: &str) {
+        let front_addr = std::ffi::CString::new(front_address).expect("CString::new failed");
+        let front_socket_address_ptr = front_addr.into_raw();
         unsafe { MdRegisterFront(self.api_ptr, front_socket_address_ptr) };
-        let front_socket_address = unsafe { CString::from_raw(front_socket_address_ptr) };
-        drop(front_socket_address);
+        let front_addr = unsafe { CString::from_raw(front_socket_address_ptr) };
+        drop(front_addr);
     }
 
-    pub fn register_name_server(&mut self, name_server: CString) {
-        let name_server_ptr = name_server.into_raw();
+    pub fn register_name_server(&self, name_server: &str) {
+        let name_srv = std::ffi::CString::new(name_server).expect("CString::new failed");
+        let name_server_ptr = name_srv.into_raw();
         unsafe { MdRegisterNameServer(self.api_ptr, name_server_ptr) };
-        let name_server = unsafe { CString::from_raw(name_server_ptr) };
-        drop(name_server);
+        let name_srv = unsafe { CString::from_raw(name_server_ptr) };
+        drop(name_srv);
     }
 
-    pub fn register_fens_user_info(&mut self, fens_user_info: &CThostFtdcFensUserInfoField) {
+    pub fn register_fens_user_info(&self, fens_user_info: &CThostFtdcFensUserInfoField) {
         unsafe { MdRegisterFensUserInfo(self.api_ptr, fens_user_info) };
     }
 
-    pub fn subscribe_market_data(&mut self, instrument_ids: &[CString]) -> ApiResult {
-        let v = cstring_slice_to_char_star_vec(instrument_ids);
+    pub fn subscribe_market_data(&self, instrument_ids: &[&str]) -> ApiResult {
+        let ids = str_slice_to_cstring_vec(instrument_ids);
+        let v = cstring_slice_to_char_star_vec(&ids);
         from_api_return_to_api_result(unsafe {
             MdSubscribeMarketData(self.api_ptr, v.as_ptr(), v.len() as c_int)
         })
     }
 
-    pub fn unsubscribe_market_data(&mut self, instrument_ids: &[CString]) -> ApiResult {
-        let v = cstring_slice_to_char_star_vec(instrument_ids);
+    pub fn unsubscribe_market_data(&self, instrument_ids: &[&str]) -> ApiResult {
+        let ids = str_slice_to_cstring_vec(instrument_ids);
+        let v = cstring_slice_to_char_star_vec(&ids);
         from_api_return_to_api_result(unsafe {
             MdUnSubscribeMarketData(self.api_ptr, v.as_ptr(), v.len() as c_int)
         })
     }
 
-    pub fn subscribe_for_quote_rsp(&mut self, instrument_ids: &[CString]) -> ApiResult {
-        let v = cstring_slice_to_char_star_vec(instrument_ids);
+    pub fn subscribe_for_quote_rsp(&self, instrument_ids: &[&str]) -> ApiResult {
+        let ids = str_slice_to_cstring_vec(instrument_ids);
+        let v = cstring_slice_to_char_star_vec(&ids);
         from_api_return_to_api_result(unsafe {
             MdSubscribeForQuoteRsp(self.api_ptr, v.as_ptr(), v.len() as c_int)
         })
     }
 
-    pub fn unsubscribe_for_quote_rsp(&mut self, instrument_ids: &[CString]) -> ApiResult {
-        let v = cstring_slice_to_char_star_vec(instrument_ids);
+    pub fn unsubscribe_for_quote_rsp(&self, instrument_ids: &[&str]) -> ApiResult {
+        let ids = str_slice_to_cstring_vec(instrument_ids);
+        let v = cstring_slice_to_char_star_vec(&ids);
         from_api_return_to_api_result(unsafe {
             MdUnSubscribeForQuoteRsp(self.api_ptr, v.as_ptr(), v.len() as c_int)
         })
     }
 
     pub fn req_user_login(
-        &mut self,
+        &self,
         req_user_login: &CThostFtdcReqUserLoginField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {
@@ -110,7 +126,7 @@ impl MDApi {
     }
 
     pub fn req_user_logout(
-        &mut self,
+        &self,
         req_user_logout: &CThostFtdcUserLogoutField,
         request_id: TThostFtdcRequestIDType,
     ) -> ApiResult {

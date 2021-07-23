@@ -3,8 +3,12 @@ use std::io::Write;
 use myctp::ctp::*;
 use myctp::*;
 
-const TRADER_FRONT: &'static str = "tcp://180.168.146.187:10101";
-const BROKER_ID: &'static str = "9999";
+// const TRADER_FRONT: &'static str = "tcp://180.168.146.187:10101";
+// const BROKER_ID: &'static str = "9999";
+
+const TRADER_FRONT: &'static str = "tcp://101.230.192.180:42205";
+const BROKER_ID: &'static str = "7070";
+
 struct Spi {}
 impl CtpSpiTrait for Spi {}
 
@@ -150,11 +154,11 @@ fn main() {
     }
     password = password.trim_end().to_string();
     let mut last_request_id = 0;
-    let flow_path = ::std::ffi::CString::new("").unwrap();
+    // let flow_path = ::std::ffi::CString::new("").unwrap();
 
-    let mut trader_api = TraderApi::new(flow_path);
-    let spi = Box::new(Spi {});
-    trader_api.register_spi(spi);
+    let mut trader_api = TraderApi::new("", Box::new(Spi {}));
+    // let spi = Box::new(Spi {});
+    // trader_api.register_spi(spi);
 
     trader_api.register_front(std::ffi::CString::new(TRADER_FRONT).unwrap());
     trader_api.subscribe_private_topic(ResumeType::Quick);
