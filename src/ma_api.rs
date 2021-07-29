@@ -12,6 +12,13 @@ pub struct MDApi {
 
 unsafe impl Send for MDApi {}
 
+impl Drop for MDApi {
+    fn drop(&mut self) {
+        unsafe { MdDestroyApi(self.api_ptr) };
+        println!("MdApi::drop()");
+    }
+}
+
 impl MDApi {
     pub fn new(
         flow_path: &str,
@@ -133,12 +140,5 @@ impl MDApi {
         from_api_return_to_api_result(unsafe {
             MdReqUserLogout(self.api_ptr, req_user_logout, request_id)
         })
-    }
-}
-
-impl Drop for MDApi {
-    fn drop(&mut self) {
-        unsafe { MdDestroyApi(self.api_ptr) };
-        println!("MdApi dropped");
     }
 }

@@ -3,7 +3,9 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 #![allow(clippy::unreadable_literal)]
-include!("generated.rs");
+// include!("generated.rs");
+
+use super::generated::*;
 
 pub const THOST_FTDC_BOOL_True: TThostFtdcBoolType = 1;
 pub const THOST_FTDC_BOOL_False: TThostFtdcBoolType = 0;

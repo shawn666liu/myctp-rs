@@ -12,6 +12,13 @@ pub struct TraderApi {
 
 unsafe impl Send for TraderApi {}
 
+impl Drop for TraderApi {
+    fn drop(&mut self) {
+        unsafe { TdDestroyApi(self.api_ptr) };
+        println!("TraderApi::drop()");
+    }
+}
+
 impl TraderApi {
     pub fn new(flow_path: &str, spi: Box<dyn CtpSpiTrait>) -> Self {
         let flow_path1 = std::ffi::CString::new(flow_path).unwrap();
@@ -319,12 +326,5 @@ impl TraderApi {
         from_api_return_to_api_result(unsafe {
             TdReqQryExchangeRate(self.api_ptr, qry_exchange_rate, request_id)
         })
-    }
-}
-
-impl Drop for TraderApi {
-    fn drop(&mut self) {
-        unsafe { TdDestroyApi(self.api_ptr) };
-        println!("TraderApi dropped");
     }
 }

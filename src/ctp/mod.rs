@@ -1,5 +1,8 @@
 mod binding;
+mod generated;
+
 pub use binding::*;
+pub use generated::*;
 
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};

@@ -108,10 +108,10 @@ fn main() {
     let mut output_file =
         std::fs::File::create("src/ctp/generated.rs").expect("cannot create bindings file");
 
-    // output_file
-    //     .write("#![allow(dead_code)]\n#![allow(non_upper_case_globals)]\n#![allow(non_camel_case_types)]\n#![allow(non_snake_case)]\n"
-    //     .as_bytes())
-    //     .unwrap();
+    output_file
+        .write("#![allow(dead_code)]\n#![allow(non_upper_case_globals)]\n#![allow(non_camel_case_types)]\n#![allow(non_snake_case)]\n\n"
+        .as_bytes())
+        .unwrap();
     // output_file
     //     .write("#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]\n\n"
     //     .as_bytes())
