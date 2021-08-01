@@ -2,6 +2,7 @@
 
 mod common;
 pub mod ctp;
+pub mod helper;
 mod ma_api;
 mod trader_api;
 
