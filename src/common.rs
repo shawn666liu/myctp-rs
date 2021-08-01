@@ -1,3 +1,5 @@
+pub use crate::ctp::CThostFtdcRspInfoField;
+pub use crate::ctp::{from_rsp_info_to_rsp_result, RspResult};
 pub use crate::ctp::{EnumOnErrRtnEvent, EnumOnFrontEvent, EnumOnRspEvent, EnumOnRtnEvent};
 pub use std::ffi::c_void;
 use std::ffi::{CStr, CString};
@@ -10,9 +12,9 @@ pub trait CtpSpiTrait: Send {
         &mut self,
         evt: EnumOnErrRtnEvent,
         param: *mut c_void,
-        psp_info: *mut c_void,
+        rsp_result: RspResult,
     ) {
-        println!("==> on_err_rtn_event, {:?}", evt);
+        println!("==> on_err_rtn_event, {:?}, {:#?}", evt, rsp_result);
     }
 
     fn on_front_event(&mut self, evt: EnumOnFrontEvent, reason: i32) {
@@ -23,17 +25,17 @@ pub trait CtpSpiTrait: Send {
         println!("==> on_rtn_event, {:?}", evt);
     }
 
-    fn on_rtn_rsp_event(
+    fn on_rsp_event(
         &mut self,
         evt: EnumOnRspEvent,
         param: *mut c_void,
-        rsp_info: *mut c_void,
+        rsp_result: RspResult,
         request_id: i32,
         is_last: bool,
     ) {
         println!(
-            "==> on_rtn_rsp_event, {:?}, req_id {}, last? {}",
-            evt, request_id, is_last
+            "==> on_rsp_event, {:?}, {:#?} req_id {}, last? {}",
+            evt, rsp_result, request_id, is_last
         );
     }
 }
@@ -63,7 +65,11 @@ pub(crate) extern "C" fn cb_on_err_rtn_event(
 ) {
     let r = object as *mut TraitsHolder;
     unsafe {
-        (*r).spi.on_err_rtn_event(evt, param, rsp_info);
+        (*r).spi.on_err_rtn_event(
+            evt,
+            param,
+            from_rsp_info_to_rsp_result(rsp_info as *const CThostFtdcRspInfoField),
+        );
     }
 }
 
@@ -84,8 +90,13 @@ pub(crate) extern "C" fn cb_rtn_rsp_event(
 ) {
     let r = object as *mut TraitsHolder;
     unsafe {
-        (*r).spi
-            .on_rtn_rsp_event(evt, param, rsp_info, request_id, is_last);
+        (*r).spi.on_rsp_event(
+            evt,
+            param,
+            from_rsp_info_to_rsp_result(rsp_info as *const CThostFtdcRspInfoField),
+            request_id,
+            is_last,
+        );
     }
 }
 
