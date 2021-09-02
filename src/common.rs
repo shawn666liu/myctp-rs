@@ -33,10 +33,10 @@ pub trait CtpSpiTrait: Send {
         request_id: i32,
         is_last: bool,
     ) {
-        println!(
-            "==> on_rsp_event, {:?}, {:#?} req_id {}, last? {}",
-            evt, rsp_result, request_id, is_last
-        );
+        // println!(
+        //     "==> on_rsp_event, {:?}, {:#?} req_id {}, last? {}",
+        //     evt, rsp_result, request_id, is_last
+        // );
     }
 }
 
@@ -57,19 +57,16 @@ pub struct TraitsHolder {
 }
 
 //# region global callback function
-pub(crate) extern "C" fn cb_on_err_rtn_event(
+pub(crate) extern "C" fn cb_err_rtn_event(
     object: *mut c_void,
     evt: EnumOnErrRtnEvent,
     param: *mut c_void,
-    rsp_info: *mut c_void,
+    rsp_info: *mut CThostFtdcRspInfoField,
 ) {
     let r = object as *mut TraitsHolder;
     unsafe {
-        (*r).spi.on_err_rtn_event(
-            evt,
-            param,
-            from_rsp_info_to_rsp_result(rsp_info as *const CThostFtdcRspInfoField),
-        );
+        (*r).spi
+            .on_err_rtn_event(evt, param, from_rsp_info_to_rsp_result(rsp_info));
     }
 }
 
@@ -80,20 +77,25 @@ pub(crate) extern "C" fn cb_front_event(object: *mut c_void, evt: EnumOnFrontEve
     }
 }
 
-pub(crate) extern "C" fn cb_rtn_rsp_event(
+pub(crate) extern "C" fn cb_rsp_event(
     object: *mut c_void,
     evt: EnumOnRspEvent,
     param: *mut c_void,
-    rsp_info: *mut c_void,
+    rsp_info: *mut CThostFtdcRspInfoField,
     request_id: c_int,
     is_last: bool,
 ) {
+    // println!(
+    //     "==> 'c' on_rsp_event, {:?}, {:#?}, req_id {}, last? {}",
+    //     evt, object, request_id, is_last
+    // );
+
     let r = object as *mut TraitsHolder;
     unsafe {
         (*r).spi.on_rsp_event(
             evt,
             param,
-            from_rsp_info_to_rsp_result(rsp_info as *const CThostFtdcRspInfoField),
+            from_rsp_info_to_rsp_result(rsp_info),
             request_id,
             is_last,
         );

@@ -7,7 +7,7 @@ use std::rc::Rc;
 
 pub struct TraderApi {
     api_ptr: *mut c_void,
-    holder: TraitsHolder,
+    holder: Box<TraitsHolder>,
 }
 
 unsafe impl Send for TraderApi {}
@@ -27,16 +27,17 @@ impl TraderApi {
         let _ = unsafe { CString::from_raw(flow_path_ptr) };
         let result = TraderApi {
             api_ptr,
-            holder: TraitsHolder { spi },
+            holder: Box::new(TraitsHolder { spi }),
         };
         unsafe {
             // register callbacks and spi
-            let spi_raw_ptr = &result.holder as *const TraitsHolder as *mut c_void;
+            let pp = result.holder.as_ref();
+            let spi_raw_ptr = pp as *const TraitsHolder as *mut c_void;
             TdRegisterCallback(
                 api_ptr,
-                Some(cb_on_err_rtn_event),
+                Some(cb_err_rtn_event),
                 Some(cb_front_event),
-                Some(cb_rtn_rsp_event),
+                Some(cb_rsp_event),
                 Some(cb_rtn_event),
                 spi_raw_ptr,
             );
@@ -44,17 +45,14 @@ impl TraderApi {
         result
     }
 
-    // pub fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
-    //     let holder = TraitsHolder { spi };
-    //     let _ = self.holder.take();
-    //     self.holder = Some(holder);
-    //     if let Some(p) = &self.holder {
-    //         let raw_ptr = p as *const TraitsHolder as *mut c_void;
-    //         unsafe { TdSetObject(self.api_ptr, raw_ptr) };
-    //     }
-    // }
+    pub fn get_api_version<'a>() -> &'a CStr {
+        unsafe {
+            let trading_day_cstr = TdGetApiVersion();
+            return CStr::from_ptr(trading_day_cstr);
+        }
+    }
 
-    pub fn init(&mut self) {
+    pub fn init(&self) {
         // assert!(self.holder.is_some());
         unsafe { TdInit(self.api_ptr) };
     }
@@ -68,18 +66,20 @@ impl TraderApi {
         unsafe { CStr::from_ptr(trading_day_cstr) }
     }
 
-    pub fn register_front(&self, front_socket_address: CString) {
-        let front_socket_address_ptr = front_socket_address.into_raw();
+    pub fn register_front(&self, front_address: &str) {
+        let front_addr = std::ffi::CString::new(front_address).expect("CString::new failed");
+        let front_socket_address_ptr = front_addr.into_raw();
         unsafe { TdRegisterFront(self.api_ptr, front_socket_address_ptr) };
-        let front_socket_address = unsafe { CString::from_raw(front_socket_address_ptr) };
-        drop(front_socket_address);
+        let front_addr = unsafe { CString::from_raw(front_socket_address_ptr) };
+        drop(front_addr);
     }
 
-    pub fn register_name_server(&self, name_server: CString) {
-        let name_server_ptr = name_server.into_raw();
+    pub fn register_name_server(&self, name_server: &str) {
+        let name_srv = std::ffi::CString::new(name_server).expect("CString::new failed");
+        let name_server_ptr = name_srv.into_raw();
         unsafe { TdRegisterNameServer(self.api_ptr, name_server_ptr) };
-        let name_server = unsafe { CString::from_raw(name_server_ptr) };
-        drop(name_server);
+        let name_srv = unsafe { CString::from_raw(name_server_ptr) };
+        drop(name_srv);
     }
 
     pub fn register_fens_user_info(&self, fens_user_info: &CThostFtdcFensUserInfoField) {

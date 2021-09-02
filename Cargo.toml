@@ -6,13 +6,13 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "*"
-encoding = "*"
-memchr = "*"
+anyhow = "1"
+encoding = "0.2"
+memchr = "2.4"
 simple-error = "*"
 time = "0.1"
 
 [build-dependencies]
-bindgen = "*"
-cc = "*"
-encoding = "*"
+bindgen = "0.59"
+cc = "1"
+encoding = "0.2"

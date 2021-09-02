@@ -38,9 +38,10 @@ pub fn new_qry_settlement_info_confirm(
     f
 }
 
-pub fn new_qry_instrument(pattern: &str) -> CThostFtdcQryInstrumentField {
+pub fn new_qry_instrument(inst: &str, xchg: &str) -> CThostFtdcQryInstrumentField {
     let mut f: CThostFtdcQryInstrumentField = Default::default();
-    set_cstr_from_str_truncate(&mut f.InstrumentID, pattern);
+    set_cstr_from_str_truncate(&mut f.InstrumentID, inst);
+    set_cstr_from_str_truncate(&mut f.ExchangeID, xchg);
     f
 }
 
@@ -73,10 +74,12 @@ pub fn new_qry_trade(broker_id: &str, investor_id: &str) -> CThostFtdcQryTradeFi
 pub fn new_qry_investor_position(
     broker_id: &str,
     investor_id: &str,
+    instrument_id: &str,
 ) -> CThostFtdcQryInvestorPositionField {
     let mut f: CThostFtdcQryInvestorPositionField = Default::default();
     set_cstr_from_str_truncate(&mut f.BrokerID, broker_id);
     set_cstr_from_str_truncate(&mut f.InvestorID, investor_id);
+    set_cstr_from_str_truncate(&mut f.InstrumentID, instrument_id);
     f
 }
 

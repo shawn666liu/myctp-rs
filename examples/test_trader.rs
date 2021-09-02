@@ -1,7 +1,6 @@
 use std::io::Write;
 
 use myctp::ctp::*;
-use myctp::helper::*;
 use myctp::*;
 
 // const TRADER_FRONT: &'static str = "tcp://180.168.146.187:10101";
@@ -41,11 +40,11 @@ fn main() {
     let mut last_request_id = 0;
     // let flow_path = ::std::ffi::CString::new("").unwrap();
 
-    let mut trader_api = TraderApi::new("", Box::new(Spi {}));
+    let trader_api = TraderApi::new("", Box::new(Spi {}));
     // let spi = Box::new(Spi {});
     // trader_api.register_spi(spi);
 
-    trader_api.register_front(std::ffi::CString::new(TRADER_FRONT).unwrap());
+    trader_api.register_front(TRADER_FRONT);
     trader_api.subscribe_private_topic(ResumeType::Quick);
     trader_api.subscribe_public_topic(ResumeType::Quick);
     trader_api.init();
@@ -57,7 +56,7 @@ fn main() {
     };
     std::thread::sleep(std::time::Duration::from_secs(1));
     last_request_id += 1;
-    match trader_api.req_qry_instrument(&new_qry_instrument(""), last_request_id) {
+    match trader_api.req_qry_instrument(&new_qry_instrument("", ""), last_request_id) {
         Ok(()) => println!("req_qry_instrument ok"),
         Err(err) => println!("req_qry_instrument err: {:?}", err),
     };
@@ -115,7 +114,7 @@ fn main() {
     std::thread::sleep(std::time::Duration::from_secs(1));
     last_request_id += 1;
     match trader_api.req_qry_investor_position(
-        &new_qry_investor_position(BROKER_ID, &user_id),
+        &new_qry_investor_position(BROKER_ID, &user_id, ""),
         last_request_id,
     ) {
         Ok(()) => println!("req_qry_investor_position ok"),

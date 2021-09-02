@@ -45,6 +45,8 @@ fn cc_build() {
         .file("./ftdc2c_ctp/ftdc2c_ctp.cpp")
         .cpp(true)
         .warnings(false)
+        .ar_flag("/NODEFAULTLIB:libc.dll")
+        // .define("WIN32", None)
         // .flag("-Wno-unused-parameter")
         // .flag("-Wno-attributes")
         .flag("-std=c++11")

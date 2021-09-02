@@ -7,7 +7,7 @@ use std::rc::Rc;
 
 pub struct MDApi {
     api_ptr: *mut c_void,
-    holder: TraitsHolder,
+    holder: Box<TraitsHolder>,
 }
 
 unsafe impl Send for MDApi {}
@@ -32,15 +32,16 @@ impl MDApi {
         let _ = unsafe { CString::from_raw(flow_path_ptr) };
         let result = MDApi {
             api_ptr,
-            holder: TraitsHolder { spi },
+            holder: Box::new(TraitsHolder { spi }),
         };
         unsafe {
             // register callbacks and spi
-            let spi_raw_ptr = &result.holder as *const TraitsHolder as *mut c_void;
+            let pp = result.holder.as_ref();
+            let spi_raw_ptr = pp as *const TraitsHolder as *mut c_void;
             MdRegisterCallback(
                 api_ptr,
                 Some(cb_front_event),
-                Some(cb_rtn_rsp_event),
+                Some(cb_rsp_event),
                 Some(cb_rtn_event),
                 spi_raw_ptr,
             );
@@ -48,18 +49,14 @@ impl MDApi {
         result
     }
 
-    // fn register_spi(&mut self, spi: Box<dyn CtpSpiTrait>) {
-    //     let holder = TraitsHolder { spi };
-    //     let _ = self.holder.take();
-    //     self.holder = Some(holder);
-    //     if let Some(p) = &self.holder {
-    //         let raw_ptr = p as *const TraitsHolder as *mut c_void;
-    //         unsafe { MdSetObject(self.api_ptr, raw_ptr) };
-    //     }
-    // }
+    pub fn get_api_version<'a>() -> &'a CStr {
+        unsafe {
+            let trading_day_cstr = MdGetApiVersion();
+            return CStr::from_ptr(trading_day_cstr);
+        }
+    }
 
     pub fn init(&self) {
-        // assert!(self.holder.is_some());
         unsafe {
             MdInit(self.api_ptr);
         }
