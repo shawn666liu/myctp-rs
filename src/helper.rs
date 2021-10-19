@@ -45,6 +45,18 @@ pub fn new_qry_instrument(inst: &str, xchg: &str) -> CThostFtdcQryInstrumentFiel
     f
 }
 
+pub fn new_qry_classified_instrument(
+    inst: &str,
+    xchg: &str,
+) -> CThostFtdcQryClassifiedInstrumentField {
+    let mut f: CThostFtdcQryClassifiedInstrumentField = Default::default();
+    set_cstr_from_str_truncate(&mut f.InstrumentID, inst);
+    set_cstr_from_str_truncate(&mut f.ExchangeID, xchg);
+    f.TradingType = THOST_FTDC_TD_TRADE;
+    f.ClassType = THOST_FTDC_INS_FUTURE;
+    f
+}
+
 pub fn new_qry_exchange(pattern: &str) -> CThostFtdcQryExchangeField {
     let mut f: CThostFtdcQryExchangeField = Default::default();
     set_cstr_from_str_truncate(&mut f.ExchangeID, pattern);

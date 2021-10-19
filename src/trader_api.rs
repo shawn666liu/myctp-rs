@@ -274,6 +274,16 @@ impl TraderApi {
         })
     }
 
+    pub fn req_qry_classified_instrument(
+        &self,
+        qry_classified_instrument: &CThostFtdcQryClassifiedInstrumentField,
+        request_id: TThostFtdcRequestIDType,
+    ) -> ApiResult {
+        from_api_return_to_api_result(unsafe {
+            TdReqQryClassifiedInstrument(self.api_ptr, qry_classified_instrument, request_id)
+        })
+    }
+
     pub fn req_qry_settlement_info(
         &self,
         qry_settlement_info: &CThostFtdcQrySettlementInfoField,
