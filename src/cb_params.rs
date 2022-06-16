@@ -119,6 +119,9 @@ pub enum OnRspOptParam {
     OnRspQueryBankAccountMoneyByFuture(Option<Box<CThostFtdcReqQueryAccountField>>),
     OnRspQryClassifiedInstrument(Option<Box<CThostFtdcInstrumentField>>),
     OnRspQryCombPromotionParam(Option<Box<CThostFtdcCombPromotionParamField>>),
+    OnRspQryTraderOffer(Option<Box<CThostFtdcTraderOfferField>>),
+    OnRspQryRiskSettleInvstPosition(Option<Box<CThostFtdcRiskSettleInvstPositionField>>),
+    OnRspQryRiskSettleProductStatus(Option<Box<CThostFtdcRiskSettleProductStatusField>>),
 }
 
 #[derive(Debug, Clone)]
@@ -978,6 +981,30 @@ pub fn cvoid_to_rsp_param(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOpt
         EnumOnRspEvent::OnRspQryCombPromotionParam => {
             let fld = param as *const CThostFtdcCombPromotionParamField;
             return OnRspOptParam::OnRspQryCombPromotionParam(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryTraderOffer => {
+            let fld = param as *const CThostFtdcTraderOfferField;
+            return OnRspOptParam::OnRspQryTraderOffer(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRiskSettleInvstPosition => {
+            let fld = param as *const CThostFtdcRiskSettleInvstPositionField;
+            return OnRspOptParam::OnRspQryRiskSettleInvstPosition(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRiskSettleProductStatus => {
+            let fld = param as *const CThostFtdcRiskSettleProductStatusField;
+            return OnRspOptParam::OnRspQryRiskSettleProductStatus(if fld.is_null() {
                 None
             } else {
                 Some(Box::new(unsafe { (*fld).clone() }))
