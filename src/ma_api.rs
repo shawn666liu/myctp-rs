@@ -7,7 +7,7 @@ use std::rc::Rc;
 
 pub struct MDApi {
     api_ptr: *mut c_void,
-    holder: Box<TraitsHolder>,
+    pub holder: Box<TraitsHolder>,
 }
 
 unsafe impl Send for MDApi {}

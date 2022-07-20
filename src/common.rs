@@ -1,6 +1,7 @@
 pub use crate::ctp::CThostFtdcRspInfoField;
 pub use crate::ctp::{from_rsp_info_to_rsp_result, RspResult};
 pub use crate::ctp::{EnumOnErrRtnEvent, EnumOnFrontEvent, EnumOnRspEvent, EnumOnRtnEvent};
+use std::any::Any;
 pub use std::ffi::c_void;
 use std::ffi::{CStr, CString};
 use std::os::raw::{c_char, c_int, c_uint};
@@ -8,6 +9,9 @@ use std::rc::Rc;
 
 /// 交易接口和行情接口都实现所有的trait
 pub trait CtpSpiTrait: Send {
+    // https://stackoverflow.com/questions/33687447/how-to-get-a-reference-to-a-concrete-type-from-a-trait-object
+    fn as_any(&mut self) -> &mut dyn Any;
+
     fn on_err_rtn_event(
         &mut self,
         evt: EnumOnErrRtnEvent,
@@ -53,7 +57,7 @@ pub fn str_slice_to_cstring_vec(str_vec: &[&str]) -> Vec<CString> {
 
 #[repr(C)]
 pub struct TraitsHolder {
-    pub(crate) spi: Box<dyn CtpSpiTrait>,
+    pub spi: Box<dyn CtpSpiTrait>,
 }
 
 //# region global callback function
