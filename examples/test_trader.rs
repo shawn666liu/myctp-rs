@@ -10,7 +10,11 @@ const TRADER_FRONT: &'static str = "tcp://101.230.192.180:42205";
 const BROKER_ID: &'static str = "7070";
 
 struct Spi {}
-impl CtpSpiTrait for Spi {}
+impl CtpSpiTrait for Spi {
+    fn as_any(&mut self) -> &mut dyn std::any::Any {
+        self
+    }
+}
 
 fn main() {
     println!(

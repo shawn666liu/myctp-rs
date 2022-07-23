@@ -14,6 +14,10 @@ impl Drop for MdSpi {
     }
 }
 impl CtpSpiTrait for MdSpi {
+    fn as_any(&mut self) -> &mut dyn std::any::Any {
+        self
+    }
+
     fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void) {
         let md = param as *const CThostFtdcDepthMarketDataField;
         if !md.is_null() {
