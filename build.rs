@@ -27,14 +27,14 @@ fn copy_lib_files() {
     let dll = "libthostmduserapi_se.so";
     let target = Path::new(&out_dir).join(dll);
     if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/linux/{}", dll), &target)
+        std::fs::copy(format!("./ftdc2c_ctp/api/linux_x64/{}", dll), &target)
             .expect(&format!("failed to copy {} to outdir", dll));
     }
 
     let dll = "libthosttraderapi_se.so";
     let target = Path::new(&out_dir).join(dll);
     if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/linux/{}", dll), &target)
+        std::fs::copy(format!("./ftdc2c_ctp/api/linux_x64/{}", dll), &target)
             .expect(&format!("failed to copy {} to outdir", dll));
     }
 }

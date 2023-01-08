@@ -22,6 +22,10 @@ impl CtpSpiTrait for MdSpi {
             println!("==> on_rtn_event, {:?}, {:?}\n\n", evt, md);
         }
     }
+
+    fn as_any(&mut self) -> &mut dyn std::any::Any {
+        todo!()
+    }
 }
 
 #[derive(Default)]

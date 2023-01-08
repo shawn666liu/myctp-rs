@@ -1,5 +1,7 @@
 [package]
-edition = "2018"
+authors = ["Shawn Liu <shawn666.liu@hotmail.com>"]
+description = "rust wrapper for CTP C++"
+edition = "2021"
 name = "myctp"
 version = "0.1.0"
 
