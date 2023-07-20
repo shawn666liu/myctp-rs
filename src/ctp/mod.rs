@@ -10,7 +10,7 @@ use simple_error::SimpleError;
 use std::borrow::Cow;
 use std::fmt;
 use std::os::raw::c_int;
-use time::{Timespec, Tm};
+use time::{Date, Month, PrimitiveDateTime};
 
 /// 交易接口中的查询操作的限制为:
 ///   每秒钟最多只能进行一次查询操作。
@@ -24,6 +24,7 @@ pub const DEFAULT_MAX_NUM_QUERY_REQUEST_PER_SECOND: usize = 1;
 /// 不进行配置的情况下,默认流量限制为:
 /// 在一个连接会话(Session)中,每个客户端每秒钟最多只能发送 6 笔交易相关的指令(报单,撤单等)。
 pub const DEFAULT_MAX_NUM_ORDER_REQUEST_PER_SECOND: usize = 6;
+
 /// 同一个账户同时最多只能建立 6 个会话(Session)。
 pub const DEFAULT_MAX_NUM_CONCURRENT_SESSION: usize = 6;
 
@@ -161,7 +162,6 @@ impl fmt::Display for ApiError {
     }
 }
 
-#[must_use]
 pub type ApiResult = Result<(), ApiError>;
 
 // TODO: use std::convert::From after trait specialization?
@@ -190,7 +190,6 @@ impl fmt::Display for RspError {
     }
 }
 
-#[must_use]
 pub type RspResult = Result<(), RspError>;
 
 pub fn from_rsp_result_to_string(rsp_result: &RspResult) -> String {
@@ -232,12 +231,11 @@ pub fn is_valid_order_sys_id(order_sys_id: &TThostFtdcOrderSysIDType) -> bool {
 }
 
 #[allow(clippy::trivially_copy_pass_by_ref)] // Will be removed
-#[deprecated(since = "0.9.0", note = "This will be removed in 0.10.0")]
 pub fn to_exchange_timestamp(
     trading_day: &TThostFtdcDateType,
     update_time: &TThostFtdcTimeType,
     update_millisec: &TThostFtdcMillisecType,
-) -> Result<Timespec, SimpleError> {
+) -> Result<PrimitiveDateTime, SimpleError> {
     let year = match ::std::str::from_utf8(&trading_day[0..4]) {
         Ok(year_str) => match year_str.parse::<u16>() {
             Ok(year) => year,
@@ -304,21 +302,11 @@ pub fn to_exchange_timestamp(
             return Err(SimpleError::new(format!("second not utf8, {}", err)));
         }
     };
-    let nanosec = *update_millisec as i32 * 1000 * 1000;
-    let tm = Tm {
-        tm_sec: second as i32,
-        tm_min: minute as i32,
-        tm_hour: hour as i32 - 8, // UTC+8
-        tm_mday: day as i32,
-        tm_mon: month as i32 - 1,
-        tm_year: year as i32 - 1900,
-        tm_wday: 0i32,
-        tm_yday: 0i32,
-        tm_isdst: 0i32,
-        tm_utcoff: 0i32,
-        tm_nsec: nanosec,
-    };
-    Ok(tm.to_timespec())
+    let date = Date::from_calendar_date(year.into(), Month::try_from(month).unwrap(), day).unwrap();
+    let result = date
+        .with_hms_milli(hour, minute, second, *update_millisec as u16)
+        .unwrap();
+    Ok(result)
 }
 
 pub fn set_cstr_from_str(buffer: &mut [u8], text: &str) -> Result<(), SimpleError> {
@@ -373,7 +361,8 @@ mod tests {
     use super::CThostFtdcDepthMarketDataField;
     use super::{set_cstr_from_str, set_cstr_from_str_truncate};
     use std::borrow::Cow;
-    use time::Timespec;
+    use time::macros::datetime;
+    use time::PrimitiveDateTime;
 
     #[test]
     fn len_0_ascii_cstr_to_str() {
@@ -476,20 +465,17 @@ mod tests {
     #[test]
     fn exchange_timestamp_conversion() {
         let mut md: CThostFtdcDepthMarketDataField = Default::default();
-        md.TradingDay = *b"19700101\0";
-        md.UpdateTime = *b"08:00:00\0";
-        md.UpdateMillisec = 0;
+        md.TradingDay = *b"19710203\0";
+        md.UpdateTime = *b"08:15:13\0";
+        md.UpdateMillisec = 123;
         let ts1 = to_exchange_timestamp(&md.TradingDay, &md.UpdateTime, &md.UpdateMillisec);
-        assert_eq!(Ok(Timespec { sec: 0, nsec: 0 }), ts1);
-        md.TradingDay = *b"19700102\0";
-        md.UpdateTime = *b"00:00:00\0";
+        let ts1_1 = datetime!(1971-02-03 08:15:13.123);
+        assert_eq!(Ok(ts1_1), ts1);
+        md.TradingDay = *b"20230720\0";
+        md.UpdateTime = *b"17:29:35\0";
+        md.UpdateMillisec = 500;
         let ts2 = to_exchange_timestamp(&md.TradingDay, &md.UpdateTime, &md.UpdateMillisec);
-        assert_eq!(
-            Ok(Timespec {
-                sec: 57600,
-                nsec: 0
-            }),
-            ts2
-        );
+        let ts2_1 = datetime!(2023-07-20 17:29:35.500);
+        assert_eq!(Ok(ts2_1), ts2);
     }
 }

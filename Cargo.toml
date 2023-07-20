@@ -3,7 +3,7 @@ authors = ["Shawn Liu <shawn666.liu@hotmail.com>"]
 description = "rust wrapper for CTP C++"
 edition = "2021"
 name = "myctp"
-version = "0.1.0"
+version = "0.1.1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -12,9 +12,9 @@ anyhow = "*"
 encoding = "*"
 memchr = "*"
 simple-error = "*"
-time = "0.1"
+time = {version = "0.3", features = ["macros"]}
 
 [build-dependencies]
-bindgen = "*"
+bindgen = "0.66"
 cc = "*"
 # encoding = "*"
