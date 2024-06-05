@@ -78,7 +78,7 @@ impl TestApp {
     }
 }
 
-fn main() {
+fn main2() {
     let mut app = TestApp::default();
     app.check_api();
     app.connect();
@@ -86,7 +86,7 @@ fn main() {
     app.disconnect();
 }
 
-fn main1() {
+fn main() {
     let md_api = MDApi::new("", false, false, Box::new(MdSpi {}));
     // let spi = Box::new(MdSpi {});
     // md_api.register_spi(spi);
@@ -100,7 +100,7 @@ fn main1() {
         Err(err) => println!("req_user_login err: {:?}", err),
     };
     std::thread::sleep(std::time::Duration::from_secs(1));
-    let instrument_ids = vec!["IF2108", "au2112", "m2109", "CF109"];
+    let instrument_ids = vec!["IF2409", "au2412", "m2409", "CF409"];
     match md_api.subscribe_market_data(&instrument_ids.clone()) {
         Ok(()) => println!("subscribe_market_data ok"),
         Err(err) => println!("subscribe_market_data err: {:?}", err),
