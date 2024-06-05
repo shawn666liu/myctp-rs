@@ -12,9 +12,9 @@ anyhow = "*"
 encoding = "*"
 memchr = "*"
 simple-error = "*"
-time = {version = "0.3", features = ["macros"]}
+time = { version = "0.3", features = ["macros"] }
 
 [build-dependencies]
-bindgen = "0.66"
+bindgen = "*"
 cc = "*"
 # encoding = "*"

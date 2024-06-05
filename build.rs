@@ -102,7 +102,7 @@ fn main() {
         .derive_default(true)
         .layout_tests(false)
         .generate_comments(false)
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()
         .expect("Unable to generate bindings");
 
