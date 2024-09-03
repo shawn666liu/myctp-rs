@@ -15,6 +15,6 @@ simple-error = "*"
 time = { version = "0.3", features = ["macros"] }
 
 [build-dependencies]
-bindgen = "*"
+bindgen = "0.69.4"
 cc = "*"
 # encoding = "*"
