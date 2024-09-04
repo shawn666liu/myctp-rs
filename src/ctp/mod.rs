@@ -6,11 +6,12 @@ pub use generated::*;
 
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};
-use simple_error::SimpleError;
+// use simple_error::SimpleError;
+use anyhow::{anyhow, Result};
 use std::borrow::Cow;
-use std::fmt;
 use std::os::raw::c_int;
-use time::{Date, Month, PrimitiveDateTime};
+use std::{any, fmt};
+// use time::{Date, Month, PrimitiveDateTime};
 
 /// 交易接口中的查询操作的限制为:
 ///   每秒钟最多只能进行一次查询操作。
@@ -28,7 +29,7 @@ pub const DEFAULT_MAX_NUM_ORDER_REQUEST_PER_SECOND: usize = 6;
 /// 同一个账户同时最多只能建立 6 个会话(Session)。
 pub const DEFAULT_MAX_NUM_CONCURRENT_SESSION: usize = 6;
 
-pub fn ascii_cstr_to_str(s: &[u8]) -> Result<&str, SimpleError> {
+pub fn ascii_cstr_to_str(s: &[u8]) -> Result<&str> {
     match s.last() {
         Some(&0u8) => {
             let len = memchr::memchr(0, s).unwrap();
@@ -36,14 +37,14 @@ pub fn ascii_cstr_to_str(s: &[u8]) -> Result<&str, SimpleError> {
             if ascii_s.is_ascii() {
                 unsafe { Ok(std::str::from_utf8_unchecked(ascii_s)) }
             } else {
-                Err(SimpleError::new("cstr is not ascii"))
+                Err(anyhow!("cstr is not ascii"))
             }
         }
-        Some(&c) => Err(SimpleError::new(format!(
+        Some(&c) => Err(anyhow!(
             "cstr should terminate with null instead of {:#x}",
             c
-        ))),
-        None => Err(SimpleError::new("cstr cannot have 0 length")),
+        )),
+        None => Err(anyhow!("cstr cannot have 0 length")),
     }
 }
 
@@ -230,98 +231,98 @@ pub fn is_valid_order_sys_id(order_sys_id: &TThostFtdcOrderSysIDType) -> bool {
     order_sys_id[0] != b'\0'
 }
 
-#[allow(clippy::trivially_copy_pass_by_ref)] // Will be removed
-pub fn to_exchange_timestamp(
-    trading_day: &TThostFtdcDateType,
-    update_time: &TThostFtdcTimeType,
-    update_millisec: &TThostFtdcMillisecType,
-) -> Result<PrimitiveDateTime, SimpleError> {
-    let year = match ::std::str::from_utf8(&trading_day[0..4]) {
-        Ok(year_str) => match year_str.parse::<u16>() {
-            Ok(year) => year,
-            Err(err) => {
-                return Err(SimpleError::new(format!("invalid year string, {}", err)));
-            }
-        },
-        Err(err) => {
-            return Err(SimpleError::new(format!("year not utf8, {}", err)));
-        }
-    };
-    let month = match ::std::str::from_utf8(&trading_day[4..6]) {
-        Ok(month_str) => match month_str.parse::<u8>() {
-            Ok(month) => month,
-            Err(err) => {
-                return Err(SimpleError::new(format!("invalid month string, {}", err)));
-            }
-        },
-        Err(err) => {
-            return Err(SimpleError::new(format!("month not utf8, {}", err)));
-        }
-    };
-    let day = match ::std::str::from_utf8(&trading_day[6..8]) {
-        Ok(day_str) => match day_str.parse::<u8>() {
-            Ok(day) => day,
-            Err(err) => {
-                return Err(SimpleError::new(format!("invalid day string, {}", err)));
-            }
-        },
-        Err(err) => {
-            return Err(SimpleError::new(format!("day not utf8, {}", err)));
-        }
-    };
-    let hour = match ::std::str::from_utf8(&update_time[0..2]) {
-        Ok(hour_str) => match hour_str.parse::<u8>() {
-            Ok(hour) => hour,
-            Err(err) => {
-                return Err(SimpleError::new(format!("invalid hour string, {}", err)));
-            }
-        },
-        Err(err) => {
-            return Err(SimpleError::new(format!("hour not utf8, {}", err)));
-        }
-    };
-    let minute = match ::std::str::from_utf8(&update_time[3..5]) {
-        Ok(minute_str) => match minute_str.parse::<u8>() {
-            Ok(minute) => minute,
-            Err(err) => {
-                return Err(SimpleError::new(format!("invalid minute string, {}", err)));
-            }
-        },
-        Err(err) => {
-            return Err(SimpleError::new(format!("minute not utf8, {}", err)));
-        }
-    };
-    let second = match ::std::str::from_utf8(&update_time[6..8]) {
-        Ok(second_str) => match second_str.parse::<u8>() {
-            Ok(second) => second,
-            Err(err) => {
-                return Err(SimpleError::new(format!("invalid second string, {}", err)));
-            }
-        },
-        Err(err) => {
-            return Err(SimpleError::new(format!("second not utf8, {}", err)));
-        }
-    };
-    let date = Date::from_calendar_date(year.into(), Month::try_from(month).unwrap(), day).unwrap();
-    let result = date
-        .with_hms_milli(hour, minute, second, *update_millisec as u16)
-        .unwrap();
-    Ok(result)
-}
+// #[allow(clippy::trivially_copy_pass_by_ref)] // Will be removed
+// pub fn to_exchange_timestamp(
+//     trading_day: &TThostFtdcDateType,
+//     update_time: &TThostFtdcTimeType,
+//     update_millisec: &TThostFtdcMillisecType,
+// ) -> Result<PrimitiveDateTime, SimpleError> {
+//     let year = match ::std::str::from_utf8(&trading_day[0..4]) {
+//         Ok(year_str) => match year_str.parse::<u16>() {
+//             Ok(year) => year,
+//             Err(err) => {
+//                 return Err(SimpleError::new(format!("invalid year string, {}", err)));
+//             }
+//         },
+//         Err(err) => {
+//             return Err(SimpleError::new(format!("year not utf8, {}", err)));
+//         }
+//     };
+//     let month = match ::std::str::from_utf8(&trading_day[4..6]) {
+//         Ok(month_str) => match month_str.parse::<u8>() {
+//             Ok(month) => month,
+//             Err(err) => {
+//                 return Err(SimpleError::new(format!("invalid month string, {}", err)));
+//             }
+//         },
+//         Err(err) => {
+//             return Err(SimpleError::new(format!("month not utf8, {}", err)));
+//         }
+//     };
+//     let day = match ::std::str::from_utf8(&trading_day[6..8]) {
+//         Ok(day_str) => match day_str.parse::<u8>() {
+//             Ok(day) => day,
+//             Err(err) => {
+//                 return Err(SimpleError::new(format!("invalid day string, {}", err)));
+//             }
+//         },
+//         Err(err) => {
+//             return Err(SimpleError::new(format!("day not utf8, {}", err)));
+//         }
+//     };
+//     let hour = match ::std::str::from_utf8(&update_time[0..2]) {
+//         Ok(hour_str) => match hour_str.parse::<u8>() {
+//             Ok(hour) => hour,
+//             Err(err) => {
+//                 return Err(SimpleError::new(format!("invalid hour string, {}", err)));
+//             }
+//         },
+//         Err(err) => {
+//             return Err(SimpleError::new(format!("hour not utf8, {}", err)));
+//         }
+//     };
+//     let minute = match ::std::str::from_utf8(&update_time[3..5]) {
+//         Ok(minute_str) => match minute_str.parse::<u8>() {
+//             Ok(minute) => minute,
+//             Err(err) => {
+//                 return Err(SimpleError::new(format!("invalid minute string, {}", err)));
+//             }
+//         },
+//         Err(err) => {
+//             return Err(SimpleError::new(format!("minute not utf8, {}", err)));
+//         }
+//     };
+//     let second = match ::std::str::from_utf8(&update_time[6..8]) {
+//         Ok(second_str) => match second_str.parse::<u8>() {
+//             Ok(second) => second,
+//             Err(err) => {
+//                 return Err(SimpleError::new(format!("invalid second string, {}", err)));
+//             }
+//         },
+//         Err(err) => {
+//             return Err(SimpleError::new(format!("second not utf8, {}", err)));
+//         }
+//     };
+//     let date = Date::from_calendar_date(year.into(), Month::try_from(month).unwrap(), day).unwrap();
+//     let result = date
+//         .with_hms_milli(hour, minute, second, *update_millisec as u16)
+//         .unwrap();
+//     Ok(result)
+// }
 
-pub fn set_cstr_from_str(buffer: &mut [u8], text: &str) -> Result<(), SimpleError> {
+pub fn set_cstr_from_str(buffer: &mut [u8], text: &str) -> Result<()> {
     if let Some(i) = memchr::memchr(0, text.as_bytes()) {
-        return Err(SimpleError::new(format!(
+        return Err(anyhow!(
             "null found in str at offset {} when filling cstr",
             i
-        )));
+        ));
     }
     if text.len() + 1 > buffer.len() {
-        return Err(SimpleError::new(format!(
+        return Err(anyhow!(
             "str len {} too long when filling cstr with buffer len {}",
             text.len(),
             buffer.len()
-        )));
+        ));
     }
     unsafe {
         std::ptr::copy_nonoverlapping(text.as_ptr(), buffer.as_mut_ptr(), text.len());
@@ -357,12 +358,12 @@ pub fn normalize_double(d: f64) -> Option<f64> {
 mod tests {
     use super::ascii_cstr_to_str;
     use super::gb18030_cstr_to_str;
-    use super::to_exchange_timestamp;
+    // use super::to_exchange_timestamp;
     use super::CThostFtdcDepthMarketDataField;
     use super::{set_cstr_from_str, set_cstr_from_str_truncate};
     use std::borrow::Cow;
-    use time::macros::datetime;
-    use time::PrimitiveDateTime;
+    // use time::macros::datetime;
+    // use time::PrimitiveDateTime;
 
     #[test]
     fn len_0_ascii_cstr_to_str() {
@@ -371,7 +372,7 @@ mod tests {
 
     #[test]
     fn ascii_cstr_to_str_trivial() {
-        assert_eq!(ascii_cstr_to_str(b"hello\0"), Ok("hello"));
+        assert_eq!(ascii_cstr_to_str(b"hello\0").unwrap(), "hello");
     }
 
     #[test]
@@ -462,20 +463,20 @@ mod tests {
         assert_eq!(buffer.as_ref(), b"hello\0");
     }
 
-    #[test]
-    fn exchange_timestamp_conversion() {
-        let mut md: CThostFtdcDepthMarketDataField = Default::default();
-        md.TradingDay = *b"19710203\0";
-        md.UpdateTime = *b"08:15:13\0";
-        md.UpdateMillisec = 123;
-        let ts1 = to_exchange_timestamp(&md.TradingDay, &md.UpdateTime, &md.UpdateMillisec);
-        let ts1_1 = datetime!(1971-02-03 08:15:13.123);
-        assert_eq!(Ok(ts1_1), ts1);
-        md.TradingDay = *b"20230720\0";
-        md.UpdateTime = *b"17:29:35\0";
-        md.UpdateMillisec = 500;
-        let ts2 = to_exchange_timestamp(&md.TradingDay, &md.UpdateTime, &md.UpdateMillisec);
-        let ts2_1 = datetime!(2023-07-20 17:29:35.500);
-        assert_eq!(Ok(ts2_1), ts2);
-    }
+    // #[test]
+    // fn exchange_timestamp_conversion() {
+    //     let mut md: CThostFtdcDepthMarketDataField = Default::default();
+    //     md.TradingDay = *b"19710203\0";
+    //     md.UpdateTime = *b"08:15:13\0";
+    //     md.UpdateMillisec = 123;
+    //     let ts1 = to_exchange_timestamp(&md.TradingDay, &md.UpdateTime, &md.UpdateMillisec);
+    //     let ts1_1 = datetime!(1971-02-03 08:15:13.123);
+    //     assert_eq!(Ok(ts1_1), ts1);
+    //     md.TradingDay = *b"20230720\0";
+    //     md.UpdateTime = *b"17:29:35\0";
+    //     md.UpdateMillisec = 500;
+    //     let ts2 = to_exchange_timestamp(&md.TradingDay, &md.UpdateTime, &md.UpdateMillisec);
+    //     let ts2_1 = datetime!(2023-07-20 17:29:35.500);
+    //     assert_eq!(Ok(ts2_1), ts2);
+    // }
 }

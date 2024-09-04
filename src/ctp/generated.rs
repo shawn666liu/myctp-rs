@@ -1414,7 +1414,7 @@ pub enum EnumOnRtnEvent {
     OnRtnCancelAccountByBank = 25,
     OnRtnChangeAccountByBank = 26,
 }
-#[repr(i32)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum THOST_TE_RESUME_TYPE {
     THOST_TERT_RESTART = 0,
