@@ -20,6 +20,8 @@ pub enum OnErrRtnOptParam {
     OnErrRtnRepealBankToFutureByFutureManual(Option<Box<CThostFtdcReqRepealField>>),
     OnErrRtnRepealFutureToBankByFutureManual(Option<Box<CThostFtdcReqRepealField>>),
     OnErrRtnQueryBankBalanceByFuture(Option<Box<CThostFtdcReqQueryAccountField>>),
+    OnErrRtnOffsetSetting(Option<Box<CThostFtdcInputOffsetSettingField>>),
+    OnErrRtnCancelOffsetSetting(Option<Box<CThostFtdcCancelOffsetSettingField>>),
 }
 
 #[derive(Debug, Clone)]
@@ -69,10 +71,12 @@ pub enum OnRspOptParam {
     OnRspQryTradingCode(Option<Box<CThostFtdcTradingCodeField>>),
     OnRspQryInstrumentMarginRate(Option<Box<CThostFtdcInstrumentMarginRateField>>),
     OnRspQryInstrumentCommissionRate(Option<Box<CThostFtdcInstrumentCommissionRateField>>),
+    OnRspQryUserSession(Option<Box<CThostFtdcUserSessionField>>),
     OnRspQryExchange(Option<Box<CThostFtdcExchangeField>>),
     OnRspQryProduct(Option<Box<CThostFtdcProductField>>),
     OnRspQryInstrument(Option<Box<CThostFtdcInstrumentField>>),
     OnRspQryDepthMarketData(Option<Box<CThostFtdcDepthMarketDataField>>),
+    OnRspQryTraderOffer(Option<Box<CThostFtdcTraderOfferField>>),
     OnRspQrySettlementInfo(Option<Box<CThostFtdcSettlementInfoField>>),
     OnRspQryTransferBank(Option<Box<CThostFtdcTransferBankField>>),
     OnRspQryInvestorPositionDetail(Option<Box<CThostFtdcInvestorPositionDetailField>>),
@@ -119,9 +123,40 @@ pub enum OnRspOptParam {
     OnRspQueryBankAccountMoneyByFuture(Option<Box<CThostFtdcReqQueryAccountField>>),
     OnRspQryClassifiedInstrument(Option<Box<CThostFtdcInstrumentField>>),
     OnRspQryCombPromotionParam(Option<Box<CThostFtdcCombPromotionParamField>>),
-    OnRspQryTraderOffer(Option<Box<CThostFtdcTraderOfferField>>),
     OnRspQryRiskSettleInvstPosition(Option<Box<CThostFtdcRiskSettleInvstPositionField>>),
     OnRspQryRiskSettleProductStatus(Option<Box<CThostFtdcRiskSettleProductStatusField>>),
+    OnRspQrySPBMFutureParameter(Option<Box<CThostFtdcSPBMFutureParameterField>>),
+    OnRspQrySPBMOptionParameter(Option<Box<CThostFtdcSPBMOptionParameterField>>),
+    OnRspQrySPBMIntraParameter(Option<Box<CThostFtdcSPBMIntraParameterField>>),
+    OnRspQrySPBMInterParameter(Option<Box<CThostFtdcSPBMInterParameterField>>),
+    OnRspQrySPBMPortfDefinition(Option<Box<CThostFtdcSPBMPortfDefinitionField>>),
+    OnRspQrySPBMInvestorPortfDef(Option<Box<CThostFtdcSPBMInvestorPortfDefField>>),
+    OnRspQryInvestorPortfMarginRatio(Option<Box<CThostFtdcInvestorPortfMarginRatioField>>),
+    OnRspQryInvestorProdSPBMDetail(Option<Box<CThostFtdcInvestorProdSPBMDetailField>>),
+    OnRspQryInvestorCommoditySPMMMargin(Option<Box<CThostFtdcInvestorCommoditySPMMMarginField>>),
+    OnRspQryInvestorCommodityGroupSPMMMargin(
+        Option<Box<CThostFtdcInvestorCommodityGroupSPMMMarginField>>,
+    ),
+    OnRspQrySPMMInstParam(Option<Box<CThostFtdcSPMMInstParamField>>),
+    OnRspQrySPMMProductParam(Option<Box<CThostFtdcSPMMProductParamField>>),
+    OnRspQrySPBMAddOnInterParameter(Option<Box<CThostFtdcSPBMAddOnInterParameterField>>),
+    OnRspQryRCAMSCombProductInfo(Option<Box<CThostFtdcRCAMSCombProductInfoField>>),
+    OnRspQryRCAMSInstrParameter(Option<Box<CThostFtdcRCAMSInstrParameterField>>),
+    OnRspQryRCAMSIntraParameter(Option<Box<CThostFtdcRCAMSIntraParameterField>>),
+    OnRspQryRCAMSInterParameter(Option<Box<CThostFtdcRCAMSInterParameterField>>),
+    OnRspQryRCAMSShortOptAdjustParam(Option<Box<CThostFtdcRCAMSShortOptAdjustParamField>>),
+    OnRspQryRCAMSInvestorCombPosition(Option<Box<CThostFtdcRCAMSInvestorCombPositionField>>),
+    OnRspQryInvestorProdRCAMSMargin(Option<Box<CThostFtdcInvestorProdRCAMSMarginField>>),
+    OnRspQryRULEInstrParameter(Option<Box<CThostFtdcRULEInstrParameterField>>),
+    OnRspQryRULEIntraParameter(Option<Box<CThostFtdcRULEIntraParameterField>>),
+    OnRspQryRULEInterParameter(Option<Box<CThostFtdcRULEInterParameterField>>),
+    OnRspQryInvestorProdRULEMargin(Option<Box<CThostFtdcInvestorProdRULEMarginField>>),
+    OnRspQryInvestorPortfSetting(Option<Box<CThostFtdcInvestorPortfSettingField>>),
+    OnRspQryInvestorInfoCommRec(Option<Box<CThostFtdcInvestorInfoCommRecField>>),
+    OnRspQryCombLeg(Option<Box<CThostFtdcCombLegField>>),
+    OnRspOffsetSetting(Option<Box<CThostFtdcInputOffsetSettingField>>),
+    OnRspCancelOffsetSetting(Option<Box<CThostFtdcInputOffsetSettingField>>),
+    OnRspQryOffsetSetting(Option<Box<CThostFtdcOffsetSettingField>>),
 }
 
 #[derive(Debug, Clone)]
@@ -153,6 +188,7 @@ pub enum OnRtnOptParam {
     OnRtnOpenAccountByBank(Option<Box<CThostFtdcOpenAccountField>>),
     OnRtnCancelAccountByBank(Option<Box<CThostFtdcCancelAccountField>>),
     OnRtnChangeAccountByBank(Option<Box<CThostFtdcChangeAccountField>>),
+    OnRtnOffsetSetting(Option<Box<CThostFtdcOffsetSettingField>>),
 }
 
 pub fn cvoid_to_errrtn_param(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnErrRtnOptParam {
@@ -280,6 +316,22 @@ pub fn cvoid_to_errrtn_param(evt: EnumOnErrRtnEvent, param: *const c_void) -> On
         EnumOnErrRtnEvent::OnErrRtnQueryBankBalanceByFuture => {
             let fld = param as *const CThostFtdcReqQueryAccountField;
             return OnErrRtnOptParam::OnErrRtnQueryBankBalanceByFuture(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnErrRtnEvent::OnErrRtnOffsetSetting => {
+            let fld = param as *const CThostFtdcInputOffsetSettingField;
+            return OnErrRtnOptParam::OnErrRtnOffsetSetting(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnErrRtnEvent::OnErrRtnCancelOffsetSetting => {
+            let fld = param as *const CThostFtdcCancelOffsetSettingField;
+            return OnErrRtnOptParam::OnErrRtnCancelOffsetSetting(if fld.is_null() {
                 None
             } else {
                 Some(Box::new(unsafe { (*fld).clone() }))
@@ -602,6 +654,14 @@ pub fn cvoid_to_rsp_param(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOpt
                 Some(Box::new(unsafe { (*fld).clone() }))
             });
         }
+        EnumOnRspEvent::OnRspQryUserSession => {
+            let fld = param as *const CThostFtdcUserSessionField;
+            return OnRspOptParam::OnRspQryUserSession(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
         EnumOnRspEvent::OnRspQryExchange => {
             let fld = param as *const CThostFtdcExchangeField;
             return OnRspOptParam::OnRspQryExchange(if fld.is_null() {
@@ -629,6 +689,14 @@ pub fn cvoid_to_rsp_param(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOpt
         EnumOnRspEvent::OnRspQryDepthMarketData => {
             let fld = param as *const CThostFtdcDepthMarketDataField;
             return OnRspOptParam::OnRspQryDepthMarketData(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryTraderOffer => {
+            let fld = param as *const CThostFtdcTraderOfferField;
+            return OnRspOptParam::OnRspQryTraderOffer(if fld.is_null() {
                 None
             } else {
                 Some(Box::new(unsafe { (*fld).clone() }))
@@ -986,14 +1054,6 @@ pub fn cvoid_to_rsp_param(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOpt
                 Some(Box::new(unsafe { (*fld).clone() }))
             });
         }
-        EnumOnRspEvent::OnRspQryTraderOffer => {
-            let fld = param as *const CThostFtdcTraderOfferField;
-            return OnRspOptParam::OnRspQryTraderOffer(if fld.is_null() {
-                None
-            } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
-            });
-        }
         EnumOnRspEvent::OnRspQryRiskSettleInvstPosition => {
             let fld = param as *const CThostFtdcRiskSettleInvstPositionField;
             return OnRspOptParam::OnRspQryRiskSettleInvstPosition(if fld.is_null() {
@@ -1005,6 +1065,246 @@ pub fn cvoid_to_rsp_param(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOpt
         EnumOnRspEvent::OnRspQryRiskSettleProductStatus => {
             let fld = param as *const CThostFtdcRiskSettleProductStatusField;
             return OnRspOptParam::OnRspQryRiskSettleProductStatus(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMFutureParameter => {
+            let fld = param as *const CThostFtdcSPBMFutureParameterField;
+            return OnRspOptParam::OnRspQrySPBMFutureParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMOptionParameter => {
+            let fld = param as *const CThostFtdcSPBMOptionParameterField;
+            return OnRspOptParam::OnRspQrySPBMOptionParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMIntraParameter => {
+            let fld = param as *const CThostFtdcSPBMIntraParameterField;
+            return OnRspOptParam::OnRspQrySPBMIntraParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMInterParameter => {
+            let fld = param as *const CThostFtdcSPBMInterParameterField;
+            return OnRspOptParam::OnRspQrySPBMInterParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMPortfDefinition => {
+            let fld = param as *const CThostFtdcSPBMPortfDefinitionField;
+            return OnRspOptParam::OnRspQrySPBMPortfDefinition(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMInvestorPortfDef => {
+            let fld = param as *const CThostFtdcSPBMInvestorPortfDefField;
+            return OnRspOptParam::OnRspQrySPBMInvestorPortfDef(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorPortfMarginRatio => {
+            let fld = param as *const CThostFtdcInvestorPortfMarginRatioField;
+            return OnRspOptParam::OnRspQryInvestorPortfMarginRatio(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorProdSPBMDetail => {
+            let fld = param as *const CThostFtdcInvestorProdSPBMDetailField;
+            return OnRspOptParam::OnRspQryInvestorProdSPBMDetail(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorCommoditySPMMMargin => {
+            let fld = param as *const CThostFtdcInvestorCommoditySPMMMarginField;
+            return OnRspOptParam::OnRspQryInvestorCommoditySPMMMargin(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorCommodityGroupSPMMMargin => {
+            let fld = param as *const CThostFtdcInvestorCommodityGroupSPMMMarginField;
+            return OnRspOptParam::OnRspQryInvestorCommodityGroupSPMMMargin(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPMMInstParam => {
+            let fld = param as *const CThostFtdcSPMMInstParamField;
+            return OnRspOptParam::OnRspQrySPMMInstParam(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPMMProductParam => {
+            let fld = param as *const CThostFtdcSPMMProductParamField;
+            return OnRspOptParam::OnRspQrySPMMProductParam(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQrySPBMAddOnInterParameter => {
+            let fld = param as *const CThostFtdcSPBMAddOnInterParameterField;
+            return OnRspOptParam::OnRspQrySPBMAddOnInterParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRCAMSCombProductInfo => {
+            let fld = param as *const CThostFtdcRCAMSCombProductInfoField;
+            return OnRspOptParam::OnRspQryRCAMSCombProductInfo(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRCAMSInstrParameter => {
+            let fld = param as *const CThostFtdcRCAMSInstrParameterField;
+            return OnRspOptParam::OnRspQryRCAMSInstrParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRCAMSIntraParameter => {
+            let fld = param as *const CThostFtdcRCAMSIntraParameterField;
+            return OnRspOptParam::OnRspQryRCAMSIntraParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRCAMSInterParameter => {
+            let fld = param as *const CThostFtdcRCAMSInterParameterField;
+            return OnRspOptParam::OnRspQryRCAMSInterParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRCAMSShortOptAdjustParam => {
+            let fld = param as *const CThostFtdcRCAMSShortOptAdjustParamField;
+            return OnRspOptParam::OnRspQryRCAMSShortOptAdjustParam(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRCAMSInvestorCombPosition => {
+            let fld = param as *const CThostFtdcRCAMSInvestorCombPositionField;
+            return OnRspOptParam::OnRspQryRCAMSInvestorCombPosition(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorProdRCAMSMargin => {
+            let fld = param as *const CThostFtdcInvestorProdRCAMSMarginField;
+            return OnRspOptParam::OnRspQryInvestorProdRCAMSMargin(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRULEInstrParameter => {
+            let fld = param as *const CThostFtdcRULEInstrParameterField;
+            return OnRspOptParam::OnRspQryRULEInstrParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRULEIntraParameter => {
+            let fld = param as *const CThostFtdcRULEIntraParameterField;
+            return OnRspOptParam::OnRspQryRULEIntraParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryRULEInterParameter => {
+            let fld = param as *const CThostFtdcRULEInterParameterField;
+            return OnRspOptParam::OnRspQryRULEInterParameter(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorProdRULEMargin => {
+            let fld = param as *const CThostFtdcInvestorProdRULEMarginField;
+            return OnRspOptParam::OnRspQryInvestorProdRULEMargin(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorPortfSetting => {
+            let fld = param as *const CThostFtdcInvestorPortfSettingField;
+            return OnRspOptParam::OnRspQryInvestorPortfSetting(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryInvestorInfoCommRec => {
+            let fld = param as *const CThostFtdcInvestorInfoCommRecField;
+            return OnRspOptParam::OnRspQryInvestorInfoCommRec(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryCombLeg => {
+            let fld = param as *const CThostFtdcCombLegField;
+            return OnRspOptParam::OnRspQryCombLeg(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspOffsetSetting => {
+            let fld = param as *const CThostFtdcInputOffsetSettingField;
+            return OnRspOptParam::OnRspOffsetSetting(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspCancelOffsetSetting => {
+            let fld = param as *const CThostFtdcInputOffsetSettingField;
+            return OnRspOptParam::OnRspCancelOffsetSetting(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRspEvent::OnRspQryOffsetSetting => {
+            let fld = param as *const CThostFtdcOffsetSettingField;
+            return OnRspOptParam::OnRspQryOffsetSetting(if fld.is_null() {
                 None
             } else {
                 Some(Box::new(unsafe { (*fld).clone() }))
@@ -1226,6 +1526,14 @@ pub fn cvoid_to_rtn_param(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOpt
         EnumOnRtnEvent::OnRtnChangeAccountByBank => {
             let fld = param as *const CThostFtdcChangeAccountField;
             return OnRtnOptParam::OnRtnChangeAccountByBank(if fld.is_null() {
+                None
+            } else {
+                Some(Box::new(unsafe { (*fld).clone() }))
+            });
+        }
+        EnumOnRtnEvent::OnRtnOffsetSetting => {
+            let fld = param as *const CThostFtdcOffsetSettingField;
+            return OnRtnOptParam::OnRtnOffsetSetting(if fld.is_null() {
                 None
             } else {
                 Some(Box::new(unsafe { (*fld).clone() }))

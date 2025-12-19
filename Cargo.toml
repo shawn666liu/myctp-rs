@@ -11,8 +11,7 @@ version = "0.1.2"
 anyhow = "*"
 encoding = "*"
 memchr = "*"
-# time = { version = "0.3", features = ["macros"] }
 
 [build-dependencies]
-bindgen = "^0.70.0"
+bindgen = "^0.72.1"
 cc = "*"

@@ -28,7 +28,7 @@ impl MDApi {
     ) -> Self {
         let flow_path1 = std::ffi::CString::new(flow_path).expect("CString::new failed");
         let flow_path_ptr = flow_path1.into_raw();
-        let api_ptr = unsafe { MdCreateApi(flow_path_ptr, use_udp, use_multicast) };
+        let api_ptr = unsafe { MdCreateApi(flow_path_ptr, use_udp, use_multicast, true) };
         let _ = unsafe { CString::from_raw(flow_path_ptr) };
         let result = MDApi {
             api_ptr,

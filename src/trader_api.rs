@@ -23,7 +23,7 @@ impl TraderApi {
     pub fn new(flow_path: &str, spi: Box<dyn CtpSpiTrait>) -> Self {
         let flow_path1 = std::ffi::CString::new(flow_path).unwrap();
         let flow_path_ptr = flow_path1.into_raw();
-        let api_ptr = unsafe { TdCreateApi(flow_path_ptr) };
+        let api_ptr = unsafe { TdCreateApi(flow_path_ptr, true) };
         let _ = unsafe { CString::from_raw(flow_path_ptr) };
         let result = TraderApi {
             api_ptr,
