@@ -4,6 +4,12 @@ use std::ffi::c_void;
 // CTP回调参数，为避免跨线程传递反复拷贝，使用Box，仅拷贝一次
 
 #[derive(Debug, Clone)]
+pub enum OnFrontEvent {
+    OnFrontConnected,
+    OnFrontDisconnected(i32),
+}
+
+#[derive(Debug, Clone)]
 pub enum OnErrRtnOptBox {
     OnErrRtnOrderInsert(Option<Box<CThostFtdcInputOrderField>>),
     OnErrRtnOrderAction(Option<Box<CThostFtdcOrderActionField>>),

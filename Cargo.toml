@@ -1,9 +1,9 @@
 [package]
 authors = ["Shawn Liu <shawn666.liu@hotmail.com>"]
 description = "rust wrapper for CTP C++"
-edition = "2021"
+edition = "2024"
 name = "myctp"
-version = "0.1.2"
+version = "0.1.3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
