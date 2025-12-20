@@ -7,7 +7,7 @@ use std::rc::Rc;
 
 use crate::md_api::MDApi;
 impl MDApi {
-    pub fn get_api_version<'a>(&self) -> &'a CStr {
+    pub fn get_api_version() -> &'static CStr {
         unsafe {
             let tmp = MdGetApiVersion();
             return CStr::from_ptr(tmp);

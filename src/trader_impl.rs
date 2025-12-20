@@ -7,7 +7,7 @@ use std::rc::Rc;
 
 use crate::trader_api::TraderApi;
 impl TraderApi {
-    pub fn get_api_version<'a>(&self) -> &'a CStr {
+    pub fn get_api_version() -> &'static CStr {
         unsafe {
             let tmp = TdGetApiVersion();
             return CStr::from_ptr(tmp);
