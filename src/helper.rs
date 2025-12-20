@@ -121,18 +121,22 @@ pub fn new_qry_trading_code(broker_id: &str, investor_id: &str) -> CThostFtdcQry
 
 pub fn new_input_order(
     broker_id: &str,
-    user_id: &str,
     investor_id: &str,
+    inst_id: &str,
+    direction: TThostFtdcDirectionType,
+    limit_price: f64,
+    order_qty: u32,
+    request_id: i32,
 ) -> CThostFtdcInputOrderField {
     let mut f: CThostFtdcInputOrderField = Default::default();
     set_cstr_from_str_truncate(&mut f.BrokerID, broker_id);
     set_cstr_from_str_truncate(&mut f.InvestorID, investor_id);
-    set_cstr_from_str_truncate(&mut f.InstrumentID, "IF1703");
-    set_cstr_from_str_truncate(&mut f.UserID, user_id);
-    f.Direction = THOST_FTDC_D_Buy;
+    set_cstr_from_str_truncate(&mut f.UserID, investor_id);
+    set_cstr_from_str_truncate(&mut f.InstrumentID, inst_id);
+    f.Direction = direction;
     f.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
-    f.LimitPrice = 1f64;
-    f.VolumeTotalOriginal = 1;
+    f.LimitPrice = limit_price;
+    f.VolumeTotalOriginal = order_qty as i32;
     f.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
     f.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
     f.TimeCondition = THOST_FTDC_TC_GFD;
@@ -140,7 +144,7 @@ pub fn new_input_order(
     f.MinVolume = 1;
     f.ContingentCondition = THOST_FTDC_CC_Immediately;
     f.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-    f.RequestID = 20;
+    f.RequestID = request_id;
     f
 }
 

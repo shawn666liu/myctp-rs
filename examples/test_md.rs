@@ -7,6 +7,8 @@ use std::ffi::{CStr, CString};
 use std::os::raw::{c_char, c_int, c_void};
 use std::rc::Rc;
 
+const MD_FRONT: &'static str = "tcp://182.254.243.31:30011";
+
 struct MdSpi {}
 impl Drop for MdSpi {
     fn drop(&mut self) {
@@ -19,12 +21,37 @@ impl CtpSpiTrait for MdSpi {
     }
 
     fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void) {
-        let md = param as *const CThostFtdcDepthMarketDataField;
-        if !md.is_null() {
-            let md = unsafe { &*md };
-            // println!("==> on_rtn_event");
-            println!("==> on_rtn_event, {:?}, {:?}\n\n", evt, md);
+        // 如果需要在本线程直接处理，则使用引用的方式，不用复制一次内存
+        match cvoid_to_rtn_ref(evt, param) {
+            OnRtnOptRef::OnRtnDepthMarketData(fld_opt) => {
+                if let Some(md) = fld_opt {
+                    let dbg = DebugDepthMarketData(md);
+                    println!("==> OnRtnDepthMarketData_Ref:\n{:?}\n\n", dbg);
+                }
+            }
+            _ => {}
         }
+
+        // 如果需要转发到其他线程，则使用Box方式，复制一次内存
+        let rtnbox = cvoid_to_rtn_box(evt, param);
+
+        // 此时可发送rtnbox对象到其他线程
+
+        match rtnbox {
+            OnRtnOptBox::OnRtnDepthMarketData(fld_opt) => {
+                if let Some(md) = fld_opt {
+                    let dbg = DebugDepthMarketData(md.as_ref());
+                    println!("==> OnRtnDepthMarketData_Box:\n{:#?}\n\n", dbg);
+                }
+            }
+            _ => {}
+        }
+
+        // let md = param as *const CThostFtdcDepthMarketDataField;
+        // if !md.is_null() {
+        //     let md = unsafe { &*md };
+        //     println!("==> on_rtn_event, {:?}, {:?}\n\n", evt, md);
+        // }
     }
 }
 
@@ -35,7 +62,7 @@ struct TestApp {
 impl TestApp {
     pub fn check_api(&mut self) {
         if self.raw_api.is_none() {
-            let md_api = MDApi::new("", false, false, Box::new(MdSpi {}));
+            let md_api = MDApi::new("", false, false, true, Box::new(MdSpi {}));
             self.raw_api = Some(md_api);
             println!("raw api created.");
         }
@@ -43,7 +70,7 @@ impl TestApp {
 
     pub fn connect(&mut self) {
         if let Some(md_api) = &self.raw_api {
-            md_api.register_front("tcp://101.230.192.179:42213");
+            md_api.register_front(MD_FRONT);
             println!("Hello ctp");
             md_api.init();
             std::thread::sleep(std::time::Duration::from_secs(2));
@@ -52,7 +79,7 @@ impl TestApp {
                 Err(err) => println!("req_user_login err: {:?}", err),
             };
             std::thread::sleep(std::time::Duration::from_secs(1));
-            let instrument_ids = vec!["IF2108", "au2112", "m2109", "CF109"];
+            let instrument_ids = vec!["IF2603", "au2603", "m2605", "CF605"];
             match md_api.subscribe_market_data(&instrument_ids.clone()) {
                 Ok(()) => println!("subscribe_market_data ok"),
                 Err(err) => println!("subscribe_market_data err: {:?}", err),
@@ -78,20 +105,17 @@ impl TestApp {
     }
 }
 
-fn main2() {
+fn main() {
     let mut app = TestApp::default();
     app.check_api();
     app.connect();
-    // std::thread::sleep(std::time::Duration::from_secs(5));
+    std::thread::sleep(std::time::Duration::from_secs(5));
     app.disconnect();
 }
 
-fn main() {
-    let md_api = MDApi::new("", false, false, Box::new(MdSpi {}));
-    // let spi = Box::new(MdSpi {});
-    // md_api.register_spi(spi);
-    // md_api.register_front("tcp://180.168.146.187:10111");
-    md_api.register_front("tcp://101.230.192.179:42213");
+fn main1() {
+    let md_api = MDApi::new("", false, false, true, Box::new(MdSpi {}));
+    md_api.register_front(MD_FRONT);
     println!("Hello ctp");
     md_api.init();
     std::thread::sleep(std::time::Duration::from_secs(2));
@@ -100,7 +124,7 @@ fn main() {
         Err(err) => println!("req_user_login err: {:?}", err),
     };
     std::thread::sleep(std::time::Duration::from_secs(1));
-    let instrument_ids = vec!["IF2409", "au2412", "m2409", "CF409"];
+    let instrument_ids = vec!["IF2603", "au2603", "m2605", "CF605"];
     match md_api.subscribe_market_data(&instrument_ids.clone()) {
         Ok(()) => println!("subscribe_market_data ok"),
         Err(err) => println!("subscribe_market_data err: {:?}", err),

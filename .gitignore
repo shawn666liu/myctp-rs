@@ -1,6 +1,5 @@
 .vscode/
 /target
-Cargo.lock
 *.so
 *.dll
 *.con

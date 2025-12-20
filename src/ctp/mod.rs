@@ -48,7 +48,7 @@ pub fn ascii_cstr_to_str(s: &[u8]) -> Result<&str> {
     }
 }
 
-pub fn gb18030_cstr_to_str(v: &[u8]) -> Cow<str> {
+pub fn gb18030_cstr_to_str(v: &'_ [u8]) -> Cow<'_, str> {
     let slice = v.split(|&c| c == 0u8).next().unwrap();
     if slice.is_ascii() {
         unsafe {
@@ -88,23 +88,6 @@ pub struct OrderIdLocalTrio {
 pub struct OrderIdExchangeDuo {
     pub exchange_id: TThostFtdcExchangeIDType,
     pub order_sys_id: TThostFtdcOrderSysIDType,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum ResumeType {
-    Restart = THOST_TE_RESUME_TYPE::THOST_TERT_RESTART as isize,
-    Resume = THOST_TE_RESUME_TYPE::THOST_TERT_RESUME as isize,
-    Quick = THOST_TE_RESUME_TYPE::THOST_TERT_QUICK as isize,
-}
-
-impl std::convert::Into<THOST_TE_RESUME_TYPE> for ResumeType {
-    fn into(self) -> THOST_TE_RESUME_TYPE {
-        match self {
-            ResumeType::Restart => THOST_TE_RESUME_TYPE::THOST_TERT_RESTART,
-            ResumeType::Resume => THOST_TE_RESUME_TYPE::THOST_TERT_RESUME,
-            ResumeType::Quick => THOST_TE_RESUME_TYPE::THOST_TERT_QUICK,
-        }
-    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -342,7 +325,7 @@ pub fn set_cstr_from_str_truncate(buffer: &mut [u8], text: &str) {
         *place = *data;
     }
     unsafe {
-        *buffer.get_unchecked_mut(text.len()) = 0u8;
+        *buffer.get_unchecked_mut(text.len().min(buffer.len() - 1)) = 0u8;
     }
 }
 

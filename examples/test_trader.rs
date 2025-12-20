@@ -3,16 +3,78 @@ use std::io::Write;
 use myctp::ctp::*;
 use myctp::*;
 
-// const TRADER_FRONT: &'static str = "tcp://180.168.146.187:10101";
-// const BROKER_ID: &'static str = "9999";
+// 7x24
+const TRADER_FRONT: &'static str = "tcp://182.254.243.31:40001";
 
-const TRADER_FRONT: &'static str = "tcp://101.230.192.180:42205";
-const BROKER_ID: &'static str = "7070";
+// const TRADER_FRONT: &'static str = "tcp://182.254.243.31:30001";
+const BROKER_ID: &'static str = "9999";
 
 struct Spi {}
 impl CtpSpiTrait for Spi {
     fn as_any(&mut self) -> &mut dyn std::any::Any {
         self
+    }
+
+    fn on_rsp_event(
+        &mut self,
+        evt: EnumOnRspEvent,
+        param: *mut c_void,
+        _rsp_result: RspResult,
+        _request_id: i32,
+        _is_last: bool,
+    ) {
+        // 如果需要在本线程直接处理，则使用引用的方式，不用复制一次内存
+        match cvoid_to_rsp_ref(evt, param) {
+            OnRspOptRef::OnRspQryInvestorPosition(fld_opt) => {
+                if let Some(fld) = fld_opt {
+                    let dbg = DebugInvestorPositionField(fld);
+                    println!("==> OnRspQryInvestorPosition:\n{:?}\n", dbg);
+                }
+            }
+            OnRspOptRef::OnRspQryInstrument(fld_opt) => {
+                if let Some(fld) = fld_opt {
+                    if fld.ProductClass == THOST_FTDC_PC_Futures {
+                        println!(
+                            "==> OnRspQryInstrument: {}",
+                            &gb18030_cstr_to_str(&fld.InstrumentID)
+                        );
+                    }
+                }
+            }
+            OnRspOptRef::OnRspQryProduct(fld_opt) => {
+                if let Some(fld) = fld_opt {
+                    println!(
+                        "==> OnRspQryProduct: {}, {}, {}, tick {}, factor {}",
+                        &gb18030_cstr_to_str(&fld.ProductID),
+                        &gb18030_cstr_to_str(&fld.ExchangeID),
+                        &gb18030_cstr_to_str(&fld.ProductName),
+                        fld.PriceTick,
+                        fld.VolumeMultiple,
+                    );
+                }
+            }
+            _ => {}
+        }
+
+        // 如果需要转发到其他线程，则使用Box方式，复制一次内存
+        let rspbox = cvoid_to_rsp_box(evt, param);
+
+        // 此时可发送rspbox对象到其他线程
+
+        match rspbox {
+            OnRspOptBox::OnRspQryTradingAccount(fld_opt) => {
+                if let Some(fld) = fld_opt {
+                    let dbg = DebugTradingAccountField(&*fld);
+                    println!("OnRspQryTradingAccount:\n{:#?}", dbg);
+                }
+            }
+            _ => {}
+        }
+
+        // println!(
+        //     "==> on_rsp_event, {:?}, {:#?} req_id {}, last? {}",
+        //     evt, rsp_result, request_id, is_last
+        // );
     }
 }
 
@@ -44,13 +106,10 @@ fn main() {
     let mut last_request_id = 0;
     // let flow_path = ::std::ffi::CString::new("").unwrap();
 
-    let trader_api = TraderApi::new("", Box::new(Spi {}));
-    // let spi = Box::new(Spi {});
-    // trader_api.register_spi(spi);
-
+    let trader_api = TraderApi::new("", true, Box::new(Spi {}));
     trader_api.register_front(TRADER_FRONT);
-    trader_api.subscribe_private_topic(ResumeType::Quick);
-    trader_api.subscribe_public_topic(ResumeType::Quick);
+    trader_api.subscribe_private_topic(THOST_TE_RESUME_TYPE::THOST_TERT_QUICK);
+    trader_api.subscribe_public_topic(THOST_TE_RESUME_TYPE::THOST_TERT_QUICK);
     trader_api.init();
     std::thread::sleep(std::time::Duration::from_secs(1));
     last_request_id += 1;
@@ -149,7 +208,18 @@ fn main() {
     };
     std::thread::sleep(std::time::Duration::from_secs(1));
     // last_request_id += 1;
-    // match trader_api.req_order_insert(&new_input_order(&user_id), last_request_id) {
+    // match trader_api.req_order_insert(
+    //     &new_input_order(
+    //         BROKER_ID,
+    //         &user_id,
+    //         "IF2601",
+    //         THOST_FTDC_D_Buy,
+    //         500f64,
+    //         1,
+    //         last_request_id,
+    //     ),
+    //     last_request_id,
+    // ) {
     //     Ok(()) => println!("req_order_insert ok"),
     //     Err(err) => println!("req_order_insert err: {:?}", err),
     // };

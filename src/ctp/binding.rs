@@ -15,6 +15,294 @@ pub const THOST_FTDC_COMB_FLAG_LENGTH: usize = 5;
 use super::{gb18030_cstr_to_str, maybe_char, normalize_double, reduce_comb_flags};
 use std::fmt;
 
+pub trait MyDebug<'a> {
+    type Debug: 'a;
+    fn my_dbg(self) -> Self::Debug;
+}
+pub struct DebugDepthMarketData<'a>(pub &'a CThostFtdcDepthMarketDataField);
+
+impl<'a> MyDebug<'a> for &'a CThostFtdcDepthMarketDataField {
+    type Debug = DebugDepthMarketData<'a>;
+
+    fn my_dbg(self) -> Self::Debug {
+        DebugDepthMarketData(self)
+    }
+}
+
+impl<'a> fmt::Debug for DebugDepthMarketData<'a> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        let mut debug = fmt.debug_struct("CThostFtdcDepthMarketDataField");
+        debug
+            .field("TradingDay", &gb18030_cstr_to_str(&self.0.TradingDay))
+            .field("InstrumentID", &gb18030_cstr_to_str(&self.0.InstrumentID))
+            .field("ExchangeID", &gb18030_cstr_to_str(&self.0.ExchangeID))
+            .field(
+                "ExchangeInstID",
+                &gb18030_cstr_to_str(&self.0.ExchangeInstID),
+            )
+            .field("LastPrice", &normalize_double(self.0.LastPrice))
+            .field(
+                "PreSettlementPrice",
+                &normalize_double(self.0.PreSettlementPrice),
+            )
+            .field("PreClosePrice", &normalize_double(self.0.PreClosePrice))
+            .field("PreOpenInterest", &self.0.PreOpenInterest)
+            .field("OpenPrice", &normalize_double(self.0.OpenPrice))
+            .field("HighestPrice", &normalize_double(self.0.HighestPrice))
+            .field("LowestPrice", &normalize_double(self.0.LowestPrice))
+            .field("Volume", &self.0.Volume)
+            .field("Turnover", &self.0.Turnover)
+            .field("OpenInterest", &self.0.OpenInterest)
+            .field("ClosePrice", &normalize_double(self.0.ClosePrice))
+            .field("SettlementPrice", &normalize_double(self.0.SettlementPrice))
+            .field("UpperLimitPrice", &normalize_double(self.0.UpperLimitPrice))
+            .field("LowerLimitPrice", &normalize_double(self.0.LowerLimitPrice))
+            .field("PreDelta", &normalize_double(self.0.PreDelta))
+            .field("CurrDelta", &normalize_double(self.0.CurrDelta))
+            .field("UpdateTime", &gb18030_cstr_to_str(&self.0.UpdateTime))
+            .field("UpdateMillisec", &self.0.UpdateMillisec)
+            .field("BidPrice1", &normalize_double(self.0.BidPrice1))
+            .field("BidVolume1", &self.0.BidVolume1)
+            .field("AskPrice1", &normalize_double(self.0.AskPrice1))
+            .field("AskVolume1", &self.0.AskVolume1);
+        if !(self.0.BidVolume2 == 0
+            && self.0.AskVolume2 == 0
+            && self.0.BidVolume3 == 0
+            && self.0.AskVolume3 == 0
+            && self.0.BidVolume4 == 0
+            && self.0.AskVolume4 == 0
+            && self.0.BidVolume5 == 0
+            && self.0.AskVolume5 == 0)
+        {
+            debug
+                .field("BidPrice2", &normalize_double(self.0.BidPrice2))
+                .field("BidVolume2", &self.0.BidVolume2)
+                .field("AskPrice2", &normalize_double(self.0.AskPrice2))
+                .field("AskVolume2", &self.0.AskVolume2)
+                .field("BidPrice3", &normalize_double(self.0.BidPrice3))
+                .field("BidVolume3", &self.0.BidVolume3)
+                .field("AskPrice3", &normalize_double(self.0.AskPrice3))
+                .field("AskVolume3", &self.0.AskVolume3)
+                .field("BidPrice4", &normalize_double(self.0.BidPrice4))
+                .field("BidVolume4", &self.0.BidVolume4)
+                .field("AskPrice4", &normalize_double(self.0.AskPrice4))
+                .field("AskVolume4", &self.0.AskVolume4)
+                .field("BidPrice5", &normalize_double(self.0.BidPrice5))
+                .field("BidVolume5", &self.0.BidVolume5)
+                .field("AskPrice5", &normalize_double(self.0.AskPrice5))
+                .field("AskVolume5", &self.0.AskVolume5);
+        }
+        debug
+            .field("AveragePrice", &normalize_double(self.0.AveragePrice))
+            .field("ActionDay", &gb18030_cstr_to_str(&self.0.ActionDay))
+            .finish()
+    }
+}
+
+pub struct DebugTradingAccountField<'a>(pub &'a CThostFtdcTradingAccountField);
+
+impl<'a> MyDebug<'a> for &'a CThostFtdcTradingAccountField {
+    type Debug = DebugTradingAccountField<'a>;
+
+    fn my_dbg(self) -> Self::Debug {
+        DebugTradingAccountField(self)
+    }
+}
+
+impl<'a> fmt::Debug for DebugTradingAccountField<'a> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.debug_struct("CThostFtdcTradingAccountField")
+            .field("BrokerID", &gb18030_cstr_to_str(&self.0.BrokerID))
+            .field("AccountID", &gb18030_cstr_to_str(&self.0.AccountID))
+            .field("PreMortgage", &self.0.PreMortgage)
+            .field("PreCredit", &self.0.PreCredit)
+            .field("PreDeposit", &self.0.PreDeposit)
+            .field("PreBalance", &self.0.PreBalance)
+            .field("PreMargin", &self.0.PreMargin)
+            .field("InterestBase", &self.0.InterestBase)
+            .field("Interest", &self.0.Interest)
+            .field("Deposit", &self.0.Deposit)
+            .field("Withdraw", &self.0.Withdraw)
+            .field("FrozenMargin", &self.0.FrozenMargin)
+            .field("FrozenCash", &self.0.FrozenCash)
+            .field("FrozenCommission", &self.0.FrozenCommission)
+            .field("CurrMargin", &self.0.CurrMargin)
+            .field("CashIn", &self.0.CashIn)
+            .field("Commission", &self.0.Commission)
+            .field("CloseProfit", &self.0.CloseProfit)
+            .field("PositionProfit", &self.0.PositionProfit)
+            .field("Balance", &self.0.Balance)
+            .field("Available", &self.0.Available)
+            .field("WithdrawQuota", &self.0.WithdrawQuota)
+            .field("Reserve", &self.0.Reserve)
+            .field("TradingDay", &gb18030_cstr_to_str(&self.0.TradingDay))
+            .field("SettlementID", &self.0.SettlementID)
+            .field("Credit", &self.0.Credit)
+            .field("Mortgage", &self.0.Mortgage)
+            .field("ExchangeMargin", &self.0.ExchangeMargin)
+            .field("DeliveryMargin", &self.0.DeliveryMargin)
+            .field("ExchangeDeliveryMargin", &self.0.ExchangeDeliveryMargin)
+            .field("ReserveBalance", &self.0.ReserveBalance)
+            .field("CurrencyID", &gb18030_cstr_to_str(&self.0.CurrencyID))
+            .field("PreFundMortgageIn", &self.0.PreFundMortgageIn)
+            .field("PreFundMortgageOut", &self.0.PreFundMortgageOut)
+            .field("FundMortgageIn", &self.0.FundMortgageIn)
+            .field("FundMortgageOut", &self.0.FundMortgageOut)
+            .field("FundMortgageAvailable", &self.0.FundMortgageAvailable)
+            .field("MortgageableFund", &self.0.MortgageableFund)
+            .field("SpecProductMargin", &self.0.SpecProductMargin)
+            .field("SpecProductFrozenMargin", &self.0.SpecProductFrozenMargin)
+            .field("SpecProductCommission", &self.0.SpecProductCommission)
+            .field(
+                "SpecProductFrozenCommission",
+                &self.0.SpecProductFrozenCommission,
+            )
+            .field(
+                "SpecProductPositionProfit",
+                &self.0.SpecProductPositionProfit,
+            )
+            .field("SpecProductCloseProfit", &self.0.SpecProductCloseProfit)
+            .field(
+                "SpecProductPositionProfitByAlg",
+                &self.0.SpecProductPositionProfitByAlg,
+            )
+            .field(
+                "SpecProductExchangeMargin",
+                &self.0.SpecProductExchangeMargin,
+            )
+            .finish()
+    }
+}
+
+pub struct DebugInvestorPositionField<'a>(pub &'a CThostFtdcInvestorPositionField);
+
+impl<'a> MyDebug<'a> for &'a CThostFtdcInvestorPositionField {
+    type Debug = DebugInvestorPositionField<'a>;
+
+    fn my_dbg(self) -> Self::Debug {
+        DebugInvestorPositionField(self)
+    }
+}
+
+impl<'a> fmt::Debug for DebugInvestorPositionField<'a> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.debug_struct("CThostFtdcInvestorPositionField")
+            .field("InstrumentID", &gb18030_cstr_to_str(&self.0.InstrumentID))
+            .field("BrokerID", &gb18030_cstr_to_str(&self.0.BrokerID))
+            .field("InvestorID", &gb18030_cstr_to_str(&self.0.InvestorID))
+            .field("PosiDirection", &char::from(self.0.PosiDirection))
+            .field("HedgeFlag", &char::from(self.0.HedgeFlag))
+            .field("PositionDate", &char::from(self.0.PositionDate))
+            .field("YdPosition", &self.0.YdPosition)
+            .field("Position", &self.0.Position)
+            .field("LongFrozen", &self.0.LongFrozen)
+            .field("ShortFrozen", &self.0.ShortFrozen)
+            .field("LongFrozenAmount", &self.0.LongFrozenAmount)
+            .field("ShortFrozenAmount", &self.0.ShortFrozenAmount)
+            .field("OpenVolume", &self.0.OpenVolume)
+            .field("CloseVolume", &self.0.CloseVolume)
+            .field("OpenAmount", &self.0.OpenAmount)
+            .field("CloseAmount", &self.0.CloseAmount)
+            .field("PositionCost", &self.0.PositionCost)
+            .field("PreMargin", &self.0.PreMargin)
+            .field("UseMargin", &self.0.UseMargin)
+            .field("FrozenMargin", &self.0.FrozenMargin)
+            .field("FrozenCash", &self.0.FrozenCash)
+            .field("FrozenCommission", &self.0.FrozenCommission)
+            .field("CashIn", &self.0.CashIn)
+            .field("Commission", &self.0.Commission)
+            .field("CloseProfit", &self.0.CloseProfit)
+            .field("PositionProfit", &self.0.PositionProfit)
+            .field("PreSettlementPrice", &self.0.PreSettlementPrice)
+            .field("SettlementPrice", &self.0.SettlementPrice)
+            .field("TradingDay", &gb18030_cstr_to_str(&self.0.TradingDay))
+            .field("SettlementID", &self.0.SettlementID)
+            .field("OpenCost", &self.0.OpenCost)
+            .field("ExchangeMargin", &self.0.ExchangeMargin)
+            .field("CombPosition", &self.0.CombPosition)
+            .field("CombLongFrozen", &self.0.CombLongFrozen)
+            .field("CombShortFrozen", &self.0.CombShortFrozen)
+            .field("CloseProfitByDate", &self.0.CloseProfitByDate)
+            .field("CloseProfitByTrade", &self.0.CloseProfitByTrade)
+            .field("TodayPosition", &self.0.TodayPosition)
+            .field("MarginRateByMoney", &self.0.MarginRateByMoney)
+            .field("MarginRateByVolume", &self.0.MarginRateByVolume)
+            .field("StrikeFrozen", &self.0.StrikeFrozen)
+            .field("StrikeFrozenAmount", &self.0.StrikeFrozenAmount)
+            .field("AbandonFrozen", &self.0.AbandonFrozen)
+            .finish()
+    }
+}
+
+pub struct DebugFtdcInstrumentField<'a>(pub &'a CThostFtdcInstrumentField);
+
+impl<'a> MyDebug<'a> for &'a CThostFtdcInstrumentField {
+    type Debug = DebugFtdcInstrumentField<'a>;
+
+    fn my_dbg(self) -> Self::Debug {
+        DebugFtdcInstrumentField(self)
+    }
+}
+
+impl<'a> fmt::Debug for DebugFtdcInstrumentField<'a> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.debug_struct("CThostFtdcInstrumentField")
+            .field("InstrumentID", &gb18030_cstr_to_str(&self.0.InstrumentID))
+            .field("ExchangeID", &gb18030_cstr_to_str(&self.0.ExchangeID))
+            .field(
+                "InstrumentName",
+                &gb18030_cstr_to_str(&self.0.InstrumentName),
+            )
+            .field(
+                "ExchangeInstID",
+                &gb18030_cstr_to_str(&self.0.ExchangeInstID),
+            )
+            .field("ProductID", &gb18030_cstr_to_str(&self.0.ProductID))
+            .field("ProductClass", &char::from(self.0.ProductClass))
+            .field("DeliveryYear", &self.0.DeliveryYear)
+            .field("DeliveryMonth", &self.0.DeliveryMonth)
+            .field("MaxMarketOrderVolume", &self.0.MaxMarketOrderVolume)
+            .field("MinMarketOrderVolume", &self.0.MinMarketOrderVolume)
+            .field("MaxLimitOrderVolume", &self.0.MaxLimitOrderVolume)
+            .field("MinLimitOrderVolume", &self.0.MinLimitOrderVolume)
+            .field("VolumeMultiple", &self.0.VolumeMultiple)
+            .field("PriceTick", &self.0.PriceTick)
+            .field("CreateDate", &gb18030_cstr_to_str(&self.0.CreateDate))
+            .field("OpenDate", &gb18030_cstr_to_str(&self.0.OpenDate))
+            .field("ExpireDate", &gb18030_cstr_to_str(&self.0.ExpireDate))
+            .field(
+                "StartDelivDate",
+                &gb18030_cstr_to_str(&self.0.StartDelivDate),
+            )
+            .field("EndDelivDate", &gb18030_cstr_to_str(&self.0.EndDelivDate))
+            .field("InstLifePhase", &char::from(self.0.InstLifePhase))
+            .field("IsTrading", &self.0.IsTrading)
+            .field("PositionType", &char::from(self.0.PositionType))
+            .field("PositionDateType", &char::from(self.0.PositionDateType))
+            .field("LongMarginRatio", &normalize_double(self.0.LongMarginRatio))
+            .field(
+                "ShortMarginRatio",
+                &normalize_double(self.0.ShortMarginRatio),
+            )
+            .field(
+                "MaxMarginSideAlgorithm",
+                &char::from(self.0.MaxMarginSideAlgorithm),
+            )
+            .field(
+                "UnderlyingInstrID",
+                &gb18030_cstr_to_str(&self.0.UnderlyingInstrID),
+            )
+            .field("StrikePrice", &normalize_double(self.0.StrikePrice))
+            .field("OptionsType", &maybe_char(self.0.OptionsType))
+            .field(
+                "UnderlyingMultiple",
+                &normalize_double(self.0.UnderlyingMultiple),
+            )
+            .field("CombinationType", &maybe_char(self.0.CombinationType))
+            .finish()
+    }
+}
+
 /*
 impl fmt::Debug for CThostFtdcRspAuthenticateField {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
@@ -108,52 +396,6 @@ impl fmt::Debug for CThostFtdcSpecificInstrumentField {
     }
 }
 
-impl fmt::Debug for CThostFtdcInstrumentField {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.debug_struct("CThostFtdcInstrumentField")
-            .field("InstrumentID", &gb18030_cstr_to_str(&self.InstrumentID))
-            .field("ExchangeID", &gb18030_cstr_to_str(&self.ExchangeID))
-            .field("InstrumentName", &gb18030_cstr_to_str(&self.InstrumentName))
-            .field("ExchangeInstID", &gb18030_cstr_to_str(&self.ExchangeInstID))
-            .field("ProductID", &gb18030_cstr_to_str(&self.ProductID))
-            .field("ProductClass", &char::from(self.ProductClass))
-            .field("DeliveryYear", &self.DeliveryYear)
-            .field("DeliveryMonth", &self.DeliveryMonth)
-            .field("MaxMarketOrderVolume", &self.MaxMarketOrderVolume)
-            .field("MinMarketOrderVolume", &self.MinMarketOrderVolume)
-            .field("MaxLimitOrderVolume", &self.MaxLimitOrderVolume)
-            .field("MinLimitOrderVolume", &self.MinLimitOrderVolume)
-            .field("VolumeMultiple", &self.VolumeMultiple)
-            .field("PriceTick", &self.PriceTick)
-            .field("CreateDate", &gb18030_cstr_to_str(&self.CreateDate))
-            .field("OpenDate", &gb18030_cstr_to_str(&self.OpenDate))
-            .field("ExpireDate", &gb18030_cstr_to_str(&self.ExpireDate))
-            .field("StartDelivDate", &gb18030_cstr_to_str(&self.StartDelivDate))
-            .field("EndDelivDate", &gb18030_cstr_to_str(&self.EndDelivDate))
-            .field("InstLifePhase", &char::from(self.InstLifePhase))
-            .field("IsTrading", &self.IsTrading)
-            .field("PositionType", &char::from(self.PositionType))
-            .field("PositionDateType", &char::from(self.PositionDateType))
-            .field("LongMarginRatio", &normalize_double(self.LongMarginRatio))
-            .field("ShortMarginRatio", &normalize_double(self.ShortMarginRatio))
-            .field(
-                "MaxMarginSideAlgorithm",
-                &char::from(self.MaxMarginSideAlgorithm),
-            )
-            .field(
-                "UnderlyingInstrID",
-                &gb18030_cstr_to_str(&self.UnderlyingInstrID),
-            )
-            .field("StrikePrice", &normalize_double(self.StrikePrice))
-            .field("OptionsType", &maybe_char(self.OptionsType))
-            .field(
-                "UnderlyingMultiple",
-                &normalize_double(self.UnderlyingMultiple),
-            )
-            .field("CombinationType", &maybe_char(self.CombinationType))
-            .finish()
-    }
-}
 
 impl fmt::Debug for CThostFtdcInstrumentStatusField {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
@@ -535,114 +777,6 @@ impl fmt::Debug for CThostFtdcTradingCodeField {
     }
 }
 
-impl fmt::Debug for CThostFtdcTradingAccountField {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.debug_struct("CThostFtdcTradingAccountField")
-            .field("BrokerID", &gb18030_cstr_to_str(&self.BrokerID))
-            .field("AccountID", &gb18030_cstr_to_str(&self.AccountID))
-            .field("PreMortgage", &self.PreMortgage)
-            .field("PreCredit", &self.PreCredit)
-            .field("PreDeposit", &self.PreDeposit)
-            .field("PreBalance", &self.PreBalance)
-            .field("PreMargin", &self.PreMargin)
-            .field("InterestBase", &self.InterestBase)
-            .field("Interest", &self.Interest)
-            .field("Deposit", &self.Deposit)
-            .field("Withdraw", &self.Withdraw)
-            .field("FrozenMargin", &self.FrozenMargin)
-            .field("FrozenCash", &self.FrozenCash)
-            .field("FrozenCommission", &self.FrozenCommission)
-            .field("CurrMargin", &self.CurrMargin)
-            .field("CashIn", &self.CashIn)
-            .field("Commission", &self.Commission)
-            .field("CloseProfit", &self.CloseProfit)
-            .field("PositionProfit", &self.PositionProfit)
-            .field("Balance", &self.Balance)
-            .field("Available", &self.Available)
-            .field("WithdrawQuota", &self.WithdrawQuota)
-            .field("Reserve", &self.Reserve)
-            .field("TradingDay", &gb18030_cstr_to_str(&self.TradingDay))
-            .field("SettlementID", &self.SettlementID)
-            .field("Credit", &self.Credit)
-            .field("Mortgage", &self.Mortgage)
-            .field("ExchangeMargin", &self.ExchangeMargin)
-            .field("DeliveryMargin", &self.DeliveryMargin)
-            .field("ExchangeDeliveryMargin", &self.ExchangeDeliveryMargin)
-            .field("ReserveBalance", &self.ReserveBalance)
-            .field("CurrencyID", &gb18030_cstr_to_str(&self.CurrencyID))
-            .field("PreFundMortgageIn", &self.PreFundMortgageIn)
-            .field("PreFundMortgageOut", &self.PreFundMortgageOut)
-            .field("FundMortgageIn", &self.FundMortgageIn)
-            .field("FundMortgageOut", &self.FundMortgageOut)
-            .field("FundMortgageAvailable", &self.FundMortgageAvailable)
-            .field("MortgageableFund", &self.MortgageableFund)
-            .field("SpecProductMargin", &self.SpecProductMargin)
-            .field("SpecProductFrozenMargin", &self.SpecProductFrozenMargin)
-            .field("SpecProductCommission", &self.SpecProductCommission)
-            .field(
-                "SpecProductFrozenCommission",
-                &self.SpecProductFrozenCommission,
-            )
-            .field("SpecProductPositionProfit", &self.SpecProductPositionProfit)
-            .field("SpecProductCloseProfit", &self.SpecProductCloseProfit)
-            .field(
-                "SpecProductPositionProfitByAlg",
-                &self.SpecProductPositionProfitByAlg,
-            )
-            .field("SpecProductExchangeMargin", &self.SpecProductExchangeMargin)
-            .finish()
-    }
-}
-
-impl fmt::Debug for CThostFtdcInvestorPositionField {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.debug_struct("CThostFtdcInvestorPositionField")
-            .field("InstrumentID", &gb18030_cstr_to_str(&self.InstrumentID))
-            .field("BrokerID", &gb18030_cstr_to_str(&self.BrokerID))
-            .field("InvestorID", &gb18030_cstr_to_str(&self.InvestorID))
-            .field("PosiDirection", &char::from(self.PosiDirection))
-            .field("HedgeFlag", &char::from(self.HedgeFlag))
-            .field("PositionDate", &char::from(self.PositionDate))
-            .field("YdPosition", &self.YdPosition)
-            .field("Position", &self.Position)
-            .field("LongFrozen", &self.LongFrozen)
-            .field("ShortFrozen", &self.ShortFrozen)
-            .field("LongFrozenAmount", &self.LongFrozenAmount)
-            .field("ShortFrozenAmount", &self.ShortFrozenAmount)
-            .field("OpenVolume", &self.OpenVolume)
-            .field("CloseVolume", &self.CloseVolume)
-            .field("OpenAmount", &self.OpenAmount)
-            .field("CloseAmount", &self.CloseAmount)
-            .field("PositionCost", &self.PositionCost)
-            .field("PreMargin", &self.PreMargin)
-            .field("UseMargin", &self.UseMargin)
-            .field("FrozenMargin", &self.FrozenMargin)
-            .field("FrozenCash", &self.FrozenCash)
-            .field("FrozenCommission", &self.FrozenCommission)
-            .field("CashIn", &self.CashIn)
-            .field("Commission", &self.Commission)
-            .field("CloseProfit", &self.CloseProfit)
-            .field("PositionProfit", &self.PositionProfit)
-            .field("PreSettlementPrice", &self.PreSettlementPrice)
-            .field("SettlementPrice", &self.SettlementPrice)
-            .field("TradingDay", &gb18030_cstr_to_str(&self.TradingDay))
-            .field("SettlementID", &self.SettlementID)
-            .field("OpenCost", &self.OpenCost)
-            .field("ExchangeMargin", &self.ExchangeMargin)
-            .field("CombPosition", &self.CombPosition)
-            .field("CombLongFrozen", &self.CombLongFrozen)
-            .field("CombShortFrozen", &self.CombShortFrozen)
-            .field("CloseProfitByDate", &self.CloseProfitByDate)
-            .field("CloseProfitByTrade", &self.CloseProfitByTrade)
-            .field("TodayPosition", &self.TodayPosition)
-            .field("MarginRateByMoney", &self.MarginRateByMoney)
-            .field("MarginRateByVolume", &self.MarginRateByVolume)
-            .field("StrikeFrozen", &self.StrikeFrozen)
-            .field("StrikeFrozenAmount", &self.StrikeFrozenAmount)
-            .field("AbandonFrozen", &self.AbandonFrozen)
-            .finish()
-    }
-}
 
 impl fmt::Debug for CThostFtdcInstrumentMarginRateField {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
@@ -751,87 +885,3 @@ impl fmt::Debug for CThostFtdcForQuoteRspField {
     }
 }
  */
-
-pub trait MyDebug<'a> {
-    type Debug: 'a;
-    fn my_dbg(self) -> Self::Debug;
-}
-pub struct FtdcDepthMarketData<'a>(&'a CThostFtdcDepthMarketDataField);
-
-impl<'a> MyDebug<'a> for &'a CThostFtdcDepthMarketDataField {
-    type Debug = FtdcDepthMarketData<'a>;
-
-    fn my_dbg(self) -> Self::Debug {
-        FtdcDepthMarketData(self)
-    }
-}
-
-impl<'a> fmt::Debug for FtdcDepthMarketData<'a> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        let mut debug = fmt.debug_struct("CThostFtdcDepthMarketDataField");
-        debug
-            .field("TradingDay", &gb18030_cstr_to_str(&self.0.TradingDay))
-            .field("InstrumentID", &gb18030_cstr_to_str(&self.0.InstrumentID))
-            .field("ExchangeID", &gb18030_cstr_to_str(&self.0.ExchangeID))
-            .field(
-                "ExchangeInstID",
-                &gb18030_cstr_to_str(&self.0.ExchangeInstID),
-            )
-            .field("LastPrice", &normalize_double(self.0.LastPrice))
-            .field(
-                "PreSettlementPrice",
-                &normalize_double(self.0.PreSettlementPrice),
-            )
-            .field("PreClosePrice", &normalize_double(self.0.PreClosePrice))
-            .field("PreOpenInterest", &self.0.PreOpenInterest)
-            .field("OpenPrice", &normalize_double(self.0.OpenPrice))
-            .field("HighestPrice", &normalize_double(self.0.HighestPrice))
-            .field("LowestPrice", &normalize_double(self.0.LowestPrice))
-            .field("Volume", &self.0.Volume)
-            .field("Turnover", &self.0.Turnover)
-            .field("OpenInterest", &self.0.OpenInterest)
-            .field("ClosePrice", &normalize_double(self.0.ClosePrice))
-            .field("SettlementPrice", &normalize_double(self.0.SettlementPrice))
-            .field("UpperLimitPrice", &normalize_double(self.0.UpperLimitPrice))
-            .field("LowerLimitPrice", &normalize_double(self.0.LowerLimitPrice))
-            .field("PreDelta", &normalize_double(self.0.PreDelta))
-            .field("CurrDelta", &normalize_double(self.0.CurrDelta))
-            .field("UpdateTime", &gb18030_cstr_to_str(&self.0.UpdateTime))
-            .field("UpdateMillisec", &self.0.UpdateMillisec)
-            .field("BidPrice1", &normalize_double(self.0.BidPrice1))
-            .field("BidVolume1", &self.0.BidVolume1)
-            .field("AskPrice1", &normalize_double(self.0.AskPrice1))
-            .field("AskVolume1", &self.0.AskVolume1);
-        if !(self.0.BidVolume2 == 0
-            && self.0.AskVolume2 == 0
-            && self.0.BidVolume3 == 0
-            && self.0.AskVolume3 == 0
-            && self.0.BidVolume4 == 0
-            && self.0.AskVolume4 == 0
-            && self.0.BidVolume5 == 0
-            && self.0.AskVolume5 == 0)
-        {
-            debug
-                .field("BidPrice2", &normalize_double(self.0.BidPrice2))
-                .field("BidVolume2", &self.0.BidVolume2)
-                .field("AskPrice2", &normalize_double(self.0.AskPrice2))
-                .field("AskVolume2", &self.0.AskVolume2)
-                .field("BidPrice3", &normalize_double(self.0.BidPrice3))
-                .field("BidVolume3", &self.0.BidVolume3)
-                .field("AskPrice3", &normalize_double(self.0.AskPrice3))
-                .field("AskVolume3", &self.0.AskVolume3)
-                .field("BidPrice4", &normalize_double(self.0.BidPrice4))
-                .field("BidVolume4", &self.0.BidVolume4)
-                .field("AskPrice4", &normalize_double(self.0.AskPrice4))
-                .field("AskVolume4", &self.0.AskVolume4)
-                .field("BidPrice5", &normalize_double(self.0.BidPrice5))
-                .field("BidVolume5", &self.0.BidVolume5)
-                .field("AskPrice5", &normalize_double(self.0.AskPrice5))
-                .field("AskVolume5", &self.0.AskVolume5);
-        }
-        debug
-            .field("AveragePrice", &normalize_double(self.0.AveragePrice))
-            .field("ActionDay", &gb18030_cstr_to_str(&self.0.ActionDay))
-            .finish()
-    }
-}

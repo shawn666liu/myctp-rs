@@ -12982,7 +12982,7 @@ impl Default for CThostFtdcFrontInfoField {
 }
 pub type CbOnErrRtnEvent = ::std::option::Option<
     unsafe extern "C" fn(
-        pObject: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
         evt: EnumOnErrRtnEvent,
         pParam: *mut ::std::os::raw::c_void,
         pRspInfo: *mut CThostFtdcRspInfoField,
@@ -12990,14 +12990,14 @@ pub type CbOnErrRtnEvent = ::std::option::Option<
 >;
 pub type CbOnFrontEvent = ::std::option::Option<
     unsafe extern "C" fn(
-        pObject: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
         evt: EnumOnFrontEvent,
         Reason: ::std::os::raw::c_int,
     ),
 >;
 pub type CbOnRspEvent = ::std::option::Option<
     unsafe extern "C" fn(
-        pObject: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
         evt: EnumOnRspEvent,
         pParam: *mut ::std::os::raw::c_void,
         pRspInfo: *mut CThostFtdcRspInfoField,
@@ -13007,27 +13007,27 @@ pub type CbOnRspEvent = ::std::option::Option<
 >;
 pub type CbOnRtnEvent = ::std::option::Option<
     unsafe extern "C" fn(
-        pObject: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
         evt: EnumOnRtnEvent,
         pParam: *mut ::std::os::raw::c_void,
     ),
 >;
 unsafe extern "C" {
-    pub fn MdDestroyApi(pApi: *mut ::std::os::raw::c_void);
+    pub fn MdDestroyApi(quoter: *mut ::std::os::raw::c_void);
 }
 unsafe extern "C" {
-    pub fn MdSetObject(
-        pApi: *mut ::std::os::raw::c_void,
-        pObject: *mut ::std::os::raw::c_void,
+    pub fn MdSetUserObject(
+        quoter: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
     ) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     pub fn MdRegisterCallback(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         c1: CbOnFrontEvent,
         c2: CbOnRspEvent,
         c3: CbOnRtnEvent,
-        pObject: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
     );
 }
 unsafe extern "C" {
@@ -13042,95 +13042,95 @@ unsafe extern "C" {
     pub fn MdGetApiVersion() -> *const ::std::os::raw::c_char;
 }
 unsafe extern "C" {
-    pub fn MdInit(pApi: *mut ::std::os::raw::c_void);
+    pub fn MdInit(quoter: *mut ::std::os::raw::c_void);
 }
 unsafe extern "C" {
-    pub fn MdGetTradingDay(pApi: *mut ::std::os::raw::c_void) -> *const ::std::os::raw::c_char;
+    pub fn MdGetTradingDay(quoter: *mut ::std::os::raw::c_void) -> *const ::std::os::raw::c_char;
 }
 unsafe extern "C" {
     pub fn MdRegisterFront(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         pszFrontAddress: *const ::std::os::raw::c_char,
     );
 }
 unsafe extern "C" {
     pub fn MdRegisterNameServer(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         pszNsAddress: *const ::std::os::raw::c_char,
     );
 }
 unsafe extern "C" {
     pub fn MdRegisterFensUserInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         pFensUserInfo: *const CThostFtdcFensUserInfoField,
     );
 }
 unsafe extern "C" {
     pub fn MdSubscribeMarketData(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         ppInstrumentID: *const *const ::std::os::raw::c_char,
         nCount: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn MdUnSubscribeMarketData(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         ppInstrumentID: *const *const ::std::os::raw::c_char,
         nCount: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn MdSubscribeForQuoteRsp(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         ppInstrumentID: *const *const ::std::os::raw::c_char,
         nCount: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn MdUnSubscribeForQuoteRsp(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         ppInstrumentID: *const *const ::std::os::raw::c_char,
         nCount: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn MdReqUserLogin(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         pReqUserLoginField: *const CThostFtdcReqUserLoginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn MdReqUserLogout(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         pUserLogout: *const CThostFtdcUserLogoutField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn MdReqQryMulticastInstrument(
-        pApi: *mut ::std::os::raw::c_void,
+        quoter: *mut ::std::os::raw::c_void,
         pQryMulticastInstrument: *const CThostFtdcQryMulticastInstrumentField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
-    pub fn TdDestroyApi(pApi: *mut ::std::os::raw::c_void);
+    pub fn TdDestroyApi(trader: *mut ::std::os::raw::c_void);
 }
 unsafe extern "C" {
-    pub fn TdSetObject(
-        pApi: *mut ::std::os::raw::c_void,
-        pObject: *mut ::std::os::raw::c_void,
+    pub fn TdSetUserObject(
+        trader: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
     ) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     pub fn TdRegisterCallback(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         c1: CbOnErrRtnEvent,
         c2: CbOnFrontEvent,
         c3: CbOnRspEvent,
         c4: CbOnRtnEvent,
-        pObject: *mut ::std::os::raw::c_void,
+        pUserObject: *mut ::std::os::raw::c_void,
     );
 }
 unsafe extern "C" {
@@ -13143,893 +13143,893 @@ unsafe extern "C" {
     pub fn TdGetApiVersion() -> *const ::std::os::raw::c_char;
 }
 unsafe extern "C" {
-    pub fn TdInit(pApi: *mut ::std::os::raw::c_void);
+    pub fn TdInit(trader: *mut ::std::os::raw::c_void);
 }
 unsafe extern "C" {
-    pub fn TdGetTradingDay(pApi: *mut ::std::os::raw::c_void) -> *const ::std::os::raw::c_char;
+    pub fn TdGetTradingDay(trader: *mut ::std::os::raw::c_void) -> *const ::std::os::raw::c_char;
 }
 unsafe extern "C" {
     pub fn TdGetFrontInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pFrontInfo: *const CThostFtdcFrontInfoField,
     );
 }
 unsafe extern "C" {
     pub fn TdRegisterFront(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pszFrontAddress: *const ::std::os::raw::c_char,
     );
 }
 unsafe extern "C" {
     pub fn TdRegisterNameServer(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pszNsAddress: *const ::std::os::raw::c_char,
     );
 }
 unsafe extern "C" {
     pub fn TdRegisterFensUserInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pFensUserInfo: *const CThostFtdcFensUserInfoField,
     );
 }
 unsafe extern "C" {
     pub fn TdSubscribePrivateTopic(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         nResumeType: THOST_TE_RESUME_TYPE,
     );
 }
 unsafe extern "C" {
     pub fn TdSubscribePublicTopic(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         nResumeType: THOST_TE_RESUME_TYPE,
     );
 }
 unsafe extern "C" {
     pub fn TdReqAuthenticate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqAuthenticateField: *const CThostFtdcReqAuthenticateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdRegisterUserSystemInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pUserSystemInfo: *const CThostFtdcUserSystemInfoField,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdSubmitUserSystemInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pUserSystemInfo: *const CThostFtdcUserSystemInfoField,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdRegisterWechatUserSystemInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pUserSystemInfo: *const CThostFtdcWechatUserSystemInfoField,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdSubmitWechatUserSystemInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pUserSystemInfo: *const CThostFtdcWechatUserSystemInfoField,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserLogin(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqUserLoginField: *const CThostFtdcReqUserLoginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserLogout(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pUserLogout: *const CThostFtdcUserLogoutField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserPasswordUpdate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pUserPasswordUpdate: *const CThostFtdcUserPasswordUpdateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqTradingAccountPasswordUpdate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pTradingAccountPasswordUpdate: *const CThostFtdcTradingAccountPasswordUpdateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserAuthMethod(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqUserAuthMethod: *const CThostFtdcReqUserAuthMethodField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqGenUserCaptcha(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqGenUserCaptcha: *const CThostFtdcReqGenUserCaptchaField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqGenUserText(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqGenUserText: *const CThostFtdcReqGenUserTextField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserLoginWithCaptcha(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqUserLoginWithCaptcha: *const CThostFtdcReqUserLoginWithCaptchaField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserLoginWithText(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqUserLoginWithText: *const CThostFtdcReqUserLoginWithTextField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqUserLoginWithOTP(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqUserLoginWithOTP: *const CThostFtdcReqUserLoginWithOTPField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqOrderInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputOrder: *const CThostFtdcInputOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqParkedOrderInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pParkedOrder: *const CThostFtdcParkedOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqParkedOrderAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pParkedOrderAction: *const CThostFtdcParkedOrderActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqOrderAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputOrderAction: *const CThostFtdcInputOrderActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryMaxOrderVolume(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryMaxOrderVolume: *const CThostFtdcQryMaxOrderVolumeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqSettlementInfoConfirm(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pSettlementInfoConfirm: *const CThostFtdcSettlementInfoConfirmField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqRemoveParkedOrder(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pRemoveParkedOrder: *const CThostFtdcRemoveParkedOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqRemoveParkedOrderAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pRemoveParkedOrderAction: *const CThostFtdcRemoveParkedOrderActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqExecOrderInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputExecOrder: *const CThostFtdcInputExecOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqExecOrderAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputExecOrderAction: *const CThostFtdcInputExecOrderActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqForQuoteInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputForQuote: *const CThostFtdcInputForQuoteField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQuoteInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputQuote: *const CThostFtdcInputQuoteField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQuoteAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputQuoteAction: *const CThostFtdcInputQuoteActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqBatchOrderAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputBatchOrderAction: *const CThostFtdcInputBatchOrderActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqOptionSelfCloseInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputOptionSelfClose: *const CThostFtdcInputOptionSelfCloseField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqOptionSelfCloseAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputOptionSelfCloseAction: *const CThostFtdcInputOptionSelfCloseActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqCombActionInsert(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputCombAction: *const CThostFtdcInputCombActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryOrder(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryOrder: *const CThostFtdcQryOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTrade(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTrade: *const CThostFtdcQryTradeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorPosition(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorPosition: *const CThostFtdcQryInvestorPositionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTradingAccount(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTradingAccount: *const CThostFtdcQryTradingAccountField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestor(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestor: *const CThostFtdcQryInvestorField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTradingCode(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTradingCode: *const CThostFtdcQryTradingCodeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInstrumentMarginRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInstrumentMarginRate: *const CThostFtdcQryInstrumentMarginRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInstrumentCommissionRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInstrumentCommissionRate: *const CThostFtdcQryInstrumentCommissionRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryUserSession(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryUserSession: *const CThostFtdcQryUserSessionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryExchange(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryExchange: *const CThostFtdcQryExchangeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryProduct(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryProduct: *const CThostFtdcQryProductField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInstrument(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInstrument: *const CThostFtdcQryInstrumentField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryDepthMarketData(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryDepthMarketData: *const CThostFtdcQryDepthMarketDataField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTraderOffer(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTraderOffer: *const CThostFtdcQryTraderOfferField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySettlementInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySettlementInfo: *const CThostFtdcQrySettlementInfoField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTransferBank(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTransferBank: *const CThostFtdcQryTransferBankField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorPositionDetail(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorPositionDetail: *const CThostFtdcQryInvestorPositionDetailField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryNotice(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryNotice: *const CThostFtdcQryNoticeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySettlementInfoConfirm(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySettlementInfoConfirm: *const CThostFtdcQrySettlementInfoConfirmField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorPositionCombineDetail(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorPositionCombineDetail: *const CThostFtdcQryInvestorPositionCombineDetailField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryCFMMCTradingAccountKey(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryCFMMCTradingAccountKey: *const CThostFtdcQryCFMMCTradingAccountKeyField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryEWarrantOffset(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryEWarrantOffset: *const CThostFtdcQryEWarrantOffsetField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorProductGroupMargin(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorProductGroupMargin: *const CThostFtdcQryInvestorProductGroupMarginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryExchangeMarginRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryExchangeMarginRate: *const CThostFtdcQryExchangeMarginRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryExchangeMarginRateAdjust(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryExchangeMarginRateAdjust: *const CThostFtdcQryExchangeMarginRateAdjustField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryExchangeRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryExchangeRate: *const CThostFtdcQryExchangeRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySecAgentACIDMap(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySecAgentACIDMap: *const CThostFtdcQrySecAgentACIDMapField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryProductExchRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryProductExchRate: *const CThostFtdcQryProductExchRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryProductGroup(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryProductGroup: *const CThostFtdcQryProductGroupField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryMMInstrumentCommissionRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryMMInstrumentCommissionRate: *const CThostFtdcQryMMInstrumentCommissionRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryMMOptionInstrCommRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryMMOptionInstrCommRate: *const CThostFtdcQryMMOptionInstrCommRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInstrumentOrderCommRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInstrumentOrderCommRate: *const CThostFtdcQryInstrumentOrderCommRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySecAgentTradingAccount(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTradingAccount: *const CThostFtdcQryTradingAccountField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySecAgentCheckMode(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySecAgentCheckMode: *const CThostFtdcQrySecAgentCheckModeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySecAgentTradeInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySecAgentTradeInfo: *const CThostFtdcQrySecAgentTradeInfoField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryOptionInstrTradeCost(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryOptionInstrTradeCost: *const CThostFtdcQryOptionInstrTradeCostField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryOptionInstrCommRate(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryOptionInstrCommRate: *const CThostFtdcQryOptionInstrCommRateField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryExecOrder(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryExecOrder: *const CThostFtdcQryExecOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryForQuote(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryForQuote: *const CThostFtdcQryForQuoteField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryQuote(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryQuote: *const CThostFtdcQryQuoteField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryOptionSelfClose(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryOptionSelfClose: *const CThostFtdcQryOptionSelfCloseField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestUnit(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestUnit: *const CThostFtdcQryInvestUnitField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryCombInstrumentGuard(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryCombInstrumentGuard: *const CThostFtdcQryCombInstrumentGuardField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryCombAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryCombAction: *const CThostFtdcQryCombActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTransferSerial(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTransferSerial: *const CThostFtdcQryTransferSerialField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryAccountregister(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryAccountregister: *const CThostFtdcQryAccountregisterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryContractBank(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryContractBank: *const CThostFtdcQryContractBankField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryParkedOrder(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryParkedOrder: *const CThostFtdcQryParkedOrderField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryParkedOrderAction(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryParkedOrderAction: *const CThostFtdcQryParkedOrderActionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryTradingNotice(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryTradingNotice: *const CThostFtdcQryTradingNoticeField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryBrokerTradingParams(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryBrokerTradingParams: *const CThostFtdcQryBrokerTradingParamsField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryBrokerTradingAlgos(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryBrokerTradingAlgos: *const CThostFtdcQryBrokerTradingAlgosField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQueryCFMMCTradingAccountToken(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQueryCFMMCTradingAccountToken: *const CThostFtdcQueryCFMMCTradingAccountTokenField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqFromBankToFutureByFuture(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqTransfer: *const CThostFtdcReqTransferField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqFromFutureToBankByFuture(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqTransfer: *const CThostFtdcReqTransferField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQueryBankAccountMoneyByFuture(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pReqQueryAccount: *const CThostFtdcReqQueryAccountField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryClassifiedInstrument(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryClassifiedInstrument: *const CThostFtdcQryClassifiedInstrumentField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryCombPromotionParam(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryCombPromotionParam: *const CThostFtdcQryCombPromotionParamField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRiskSettleInvstPosition(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRiskSettleInvstPosition: *const CThostFtdcQryRiskSettleInvstPositionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRiskSettleProductStatus(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRiskSettleProductStatus: *const CThostFtdcQryRiskSettleProductStatusField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMFutureParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMFutureParameter: *const CThostFtdcQrySPBMFutureParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMOptionParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMOptionParameter: *const CThostFtdcQrySPBMOptionParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMIntraParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMIntraParameter: *const CThostFtdcQrySPBMIntraParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMInterParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMInterParameter: *const CThostFtdcQrySPBMInterParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMPortfDefinition(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMPortfDefinition: *const CThostFtdcQrySPBMPortfDefinitionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMInvestorPortfDef(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMInvestorPortfDef: *const CThostFtdcQrySPBMInvestorPortfDefField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorPortfMarginRatio(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorPortfMarginRatio: *const CThostFtdcQryInvestorPortfMarginRatioField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorProdSPBMDetail(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorProdSPBMDetail: *const CThostFtdcQryInvestorProdSPBMDetailField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorCommoditySPMMMargin(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorCommoditySPMMMargin: *const CThostFtdcQryInvestorCommoditySPMMMarginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorCommodityGroupSPMMMargin(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorCommodityGroupSPMMMargin : * const CThostFtdcQryInvestorCommodityGroupSPMMMarginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPMMInstParam(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPMMInstParam: *const CThostFtdcQrySPMMInstParamField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPMMProductParam(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPMMProductParam: *const CThostFtdcQrySPMMProductParamField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQrySPBMAddOnInterParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQrySPBMAddOnInterParameter: *const CThostFtdcQrySPBMAddOnInterParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRCAMSCombProductInfo(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRCAMSCombProductInfo: *const CThostFtdcQryRCAMSCombProductInfoField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRCAMSInstrParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRCAMSInstrParameter: *const CThostFtdcQryRCAMSInstrParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRCAMSIntraParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRCAMSIntraParameter: *const CThostFtdcQryRCAMSIntraParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRCAMSInterParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRCAMSInterParameter: *const CThostFtdcQryRCAMSInterParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRCAMSShortOptAdjustParam(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRCAMSShortOptAdjustParam: *const CThostFtdcQryRCAMSShortOptAdjustParamField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRCAMSInvestorCombPosition(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRCAMSInvestorCombPosition: *const CThostFtdcQryRCAMSInvestorCombPositionField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorProdRCAMSMargin(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorProdRCAMSMargin: *const CThostFtdcQryInvestorProdRCAMSMarginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRULEInstrParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRULEInstrParameter: *const CThostFtdcQryRULEInstrParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRULEIntraParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRULEIntraParameter: *const CThostFtdcQryRULEIntraParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryRULEInterParameter(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryRULEInterParameter: *const CThostFtdcQryRULEInterParameterField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorProdRULEMargin(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorProdRULEMargin: *const CThostFtdcQryInvestorProdRULEMarginField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorPortfSetting(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorPortfSetting: *const CThostFtdcQryInvestorPortfSettingField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryInvestorInfoCommRec(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryInvestorInfoCommRec: *const CThostFtdcQryInvestorInfoCommRecField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryCombLeg(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryCombLeg: *const CThostFtdcQryCombLegField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqOffsetSetting(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputOffsetSetting: *const CThostFtdcInputOffsetSettingField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqCancelOffsetSetting(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pInputOffsetSetting: *const CThostFtdcInputOffsetSettingField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 unsafe extern "C" {
     pub fn TdReqQryOffsetSetting(
-        pApi: *mut ::std::os::raw::c_void,
+        trader: *mut ::std::os::raw::c_void,
         pQryOffsetSetting: *const CThostFtdcQryOffsetSettingField,
         nRequestID: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
