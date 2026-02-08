@@ -1,5 +1,6 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
+mod cb_params_arc;
 mod cb_params_box;
 mod cb_params_ref;
 mod common;
@@ -10,6 +11,7 @@ mod md_impl;
 mod trader_api;
 mod trader_impl;
 
+pub use cb_params_arc::*;
 pub use cb_params_box::*;
 pub use cb_params_ref::*;
 pub use common::*;
