@@ -1,6 +1,6 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use myctp::ctp::*;
 use myctp::*;
 use std::ffi::{CStr, CString};
@@ -32,16 +32,31 @@ impl CtpSpiTrait for MdSpi {
             _ => {}
         }
 
-        // 如果需要转发到其他线程，则使用Box方式，复制一次内存
-        let rtnbox = cvoid_to_rtn_box(evt, param);
+        // 如果需要转发到其他线程，则使用Box或者Arc方式，复制一次内存
+        // cvoid_to_rtn_arc
+        // let rtnbox = cvoid_to_rtn_box(evt, param);
+
+        // // 此时可发送rtnbox对象到其他线程
+
+        // match rtnbox {
+        //     OnRtnOptBox::OnRtnDepthMarketData(fld_opt) => {
+        //         if let Some(md) = fld_opt {
+        //             let dbg = DebugDepthMarketData(md.as_ref());
+        //             println!("==> OnRtnDepthMarketData_Box:\n{:#?}\n\n", dbg);
+        //         }
+        //     }
+        //     _ => {}
+        // }
+
+        let rtnbox = cvoid_to_rtn_arc(evt, param);
 
         // 此时可发送rtnbox对象到其他线程
 
         match rtnbox {
-            OnRtnOptBox::OnRtnDepthMarketData(fld_opt) => {
+            OnRtnOptArc::OnRtnDepthMarketData(fld_opt) => {
                 if let Some(md) = fld_opt {
                     let dbg = DebugDepthMarketData(md.as_ref());
-                    println!("==> OnRtnDepthMarketData_Box:\n{:#?}\n\n", dbg);
+                    println!("==> OnRtnDepthMarketData_Arc:\n{:#?}\n\n", dbg);
                 }
             }
             _ => {}

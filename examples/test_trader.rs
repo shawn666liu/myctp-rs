@@ -4,9 +4,9 @@ use myctp::ctp::*;
 use myctp::*;
 
 // 7x24
-const TRADER_FRONT: &'static str = "tcp://182.254.243.31:40001";
+// const TRADER_FRONT: &'static str = "tcp://182.254.243.31:40001";
+const TRADER_FRONT: &'static str = "tcp://182.254.243.31:30001";
 
-// const TRADER_FRONT: &'static str = "tcp://182.254.243.31:30001";
 const BROKER_ID: &'static str = "9999";
 
 struct Spi {}

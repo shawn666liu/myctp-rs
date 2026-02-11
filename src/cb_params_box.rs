@@ -199,7 +199,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnOrderInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnOrderAction => {
@@ -207,7 +207,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnExecOrderInsert => {
@@ -215,7 +215,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnExecOrderInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnExecOrderAction => {
@@ -223,7 +223,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnExecOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnForQuoteInsert => {
@@ -231,7 +231,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnForQuoteInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnQuoteInsert => {
@@ -239,7 +239,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnQuoteInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnQuoteAction => {
@@ -247,7 +247,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnQuoteAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnBatchOrderAction => {
@@ -255,7 +255,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnBatchOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnOptionSelfCloseInsert => {
@@ -263,7 +263,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnOptionSelfCloseInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnOptionSelfCloseAction => {
@@ -271,7 +271,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnOptionSelfCloseAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnCombActionInsert => {
@@ -279,7 +279,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnCombActionInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnBankToFutureByFuture => {
@@ -287,7 +287,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnBankToFutureByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnFutureToBankByFuture => {
@@ -295,7 +295,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnFutureToBankByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnRepealBankToFutureByFutureManual => {
@@ -303,7 +303,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnRepealBankToFutureByFutureManual(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnRepealFutureToBankByFutureManual => {
@@ -311,7 +311,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnRepealFutureToBankByFutureManual(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnQueryBankBalanceByFuture => {
@@ -319,7 +319,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnQueryBankBalanceByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnOffsetSetting => {
@@ -327,7 +327,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnOffsetSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnErrRtnEvent::OnErrRtnCancelOffsetSetting => {
@@ -335,7 +335,7 @@ pub fn cvoid_to_errrtn_box(evt: EnumOnErrRtnEvent, param: *const c_void) -> OnEr
             return OnErrRtnOptBox::OnErrRtnCancelOffsetSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
     }
@@ -347,7 +347,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspUserLogin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspUserLogout => {
@@ -355,7 +355,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspUserLogout(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryMulticastInstrument => {
@@ -363,7 +363,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryMulticastInstrument(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspError => {
@@ -371,7 +371,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspError(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspSubMarketData => {
@@ -379,7 +379,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspSubMarketData(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspUnSubMarketData => {
@@ -387,7 +387,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspUnSubMarketData(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspSubForQuoteRsp => {
@@ -395,7 +395,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspSubForQuoteRsp(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspUnSubForQuoteRsp => {
@@ -403,7 +403,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspUnSubForQuoteRsp(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspAuthenticate => {
@@ -411,7 +411,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspAuthenticate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspUserPasswordUpdate => {
@@ -419,7 +419,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspUserPasswordUpdate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspTradingAccountPasswordUpdate => {
@@ -427,7 +427,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspTradingAccountPasswordUpdate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspUserAuthMethod => {
@@ -435,7 +435,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspUserAuthMethod(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspGenUserCaptcha => {
@@ -443,7 +443,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspGenUserCaptcha(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspGenUserText => {
@@ -451,7 +451,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspGenUserText(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspOrderInsert => {
@@ -459,7 +459,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspOrderInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspParkedOrderInsert => {
@@ -467,7 +467,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspParkedOrderInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspParkedOrderAction => {
@@ -475,7 +475,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspParkedOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspOrderAction => {
@@ -483,7 +483,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryMaxOrderVolume => {
@@ -491,7 +491,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryMaxOrderVolume(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspSettlementInfoConfirm => {
@@ -499,7 +499,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspSettlementInfoConfirm(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspRemoveParkedOrder => {
@@ -507,7 +507,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspRemoveParkedOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspRemoveParkedOrderAction => {
@@ -515,7 +515,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspRemoveParkedOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspExecOrderInsert => {
@@ -523,7 +523,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspExecOrderInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspExecOrderAction => {
@@ -531,7 +531,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspExecOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspForQuoteInsert => {
@@ -539,7 +539,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspForQuoteInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQuoteInsert => {
@@ -547,7 +547,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQuoteInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQuoteAction => {
@@ -555,7 +555,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQuoteAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspBatchOrderAction => {
@@ -563,7 +563,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspBatchOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspOptionSelfCloseInsert => {
@@ -571,7 +571,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspOptionSelfCloseInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspOptionSelfCloseAction => {
@@ -579,7 +579,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspOptionSelfCloseAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspCombActionInsert => {
@@ -587,7 +587,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspCombActionInsert(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryOrder => {
@@ -595,7 +595,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTrade => {
@@ -603,7 +603,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTrade(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorPosition => {
@@ -611,7 +611,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorPosition(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTradingAccount => {
@@ -619,7 +619,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTradingAccount(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestor => {
@@ -627,7 +627,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestor(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTradingCode => {
@@ -635,7 +635,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTradingCode(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInstrumentMarginRate => {
@@ -643,7 +643,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInstrumentMarginRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInstrumentCommissionRate => {
@@ -651,7 +651,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInstrumentCommissionRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryUserSession => {
@@ -659,7 +659,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryUserSession(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryExchange => {
@@ -667,7 +667,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryExchange(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryProduct => {
@@ -675,7 +675,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryProduct(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInstrument => {
@@ -683,7 +683,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInstrument(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryDepthMarketData => {
@@ -691,7 +691,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryDepthMarketData(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTraderOffer => {
@@ -699,7 +699,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTraderOffer(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySettlementInfo => {
@@ -707,7 +707,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySettlementInfo(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTransferBank => {
@@ -715,7 +715,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTransferBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorPositionDetail => {
@@ -723,7 +723,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorPositionDetail(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryNotice => {
@@ -731,7 +731,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryNotice(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySettlementInfoConfirm => {
@@ -739,7 +739,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySettlementInfoConfirm(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorPositionCombineDetail => {
@@ -747,7 +747,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorPositionCombineDetail(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryCFMMCTradingAccountKey => {
@@ -755,7 +755,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryCFMMCTradingAccountKey(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryEWarrantOffset => {
@@ -763,7 +763,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryEWarrantOffset(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorProductGroupMargin => {
@@ -771,7 +771,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorProductGroupMargin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryExchangeMarginRate => {
@@ -779,7 +779,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryExchangeMarginRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryExchangeMarginRateAdjust => {
@@ -787,7 +787,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryExchangeMarginRateAdjust(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryExchangeRate => {
@@ -795,7 +795,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryExchangeRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySecAgentACIDMap => {
@@ -803,7 +803,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySecAgentACIDMap(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryProductExchRate => {
@@ -811,7 +811,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryProductExchRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryProductGroup => {
@@ -819,7 +819,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryProductGroup(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryMMInstrumentCommissionRate => {
@@ -827,7 +827,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryMMInstrumentCommissionRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryMMOptionInstrCommRate => {
@@ -835,7 +835,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryMMOptionInstrCommRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInstrumentOrderCommRate => {
@@ -843,7 +843,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInstrumentOrderCommRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySecAgentTradingAccount => {
@@ -851,7 +851,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySecAgentTradingAccount(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySecAgentCheckMode => {
@@ -859,7 +859,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySecAgentCheckMode(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySecAgentTradeInfo => {
@@ -867,7 +867,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySecAgentTradeInfo(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryOptionInstrTradeCost => {
@@ -875,7 +875,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryOptionInstrTradeCost(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryOptionInstrCommRate => {
@@ -883,7 +883,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryOptionInstrCommRate(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryExecOrder => {
@@ -891,7 +891,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryExecOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryForQuote => {
@@ -899,7 +899,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryForQuote(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryQuote => {
@@ -907,7 +907,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryQuote(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryOptionSelfClose => {
@@ -915,7 +915,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryOptionSelfClose(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestUnit => {
@@ -923,7 +923,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestUnit(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryCombInstrumentGuard => {
@@ -931,7 +931,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryCombInstrumentGuard(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryCombAction => {
@@ -939,7 +939,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryCombAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTransferSerial => {
@@ -947,7 +947,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTransferSerial(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryAccountregister => {
@@ -955,7 +955,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryAccountregister(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryContractBank => {
@@ -963,7 +963,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryContractBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryParkedOrder => {
@@ -971,7 +971,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryParkedOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryParkedOrderAction => {
@@ -979,7 +979,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryParkedOrderAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryTradingNotice => {
@@ -987,7 +987,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryTradingNotice(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryBrokerTradingParams => {
@@ -995,7 +995,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryBrokerTradingParams(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryBrokerTradingAlgos => {
@@ -1003,7 +1003,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryBrokerTradingAlgos(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQueryCFMMCTradingAccountToken => {
@@ -1011,7 +1011,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQueryCFMMCTradingAccountToken(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspFromBankToFutureByFuture => {
@@ -1019,7 +1019,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspFromBankToFutureByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspFromFutureToBankByFuture => {
@@ -1027,7 +1027,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspFromFutureToBankByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQueryBankAccountMoneyByFuture => {
@@ -1035,7 +1035,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQueryBankAccountMoneyByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryClassifiedInstrument => {
@@ -1043,7 +1043,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryClassifiedInstrument(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryCombPromotionParam => {
@@ -1051,7 +1051,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryCombPromotionParam(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRiskSettleInvstPosition => {
@@ -1059,7 +1059,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRiskSettleInvstPosition(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRiskSettleProductStatus => {
@@ -1067,7 +1067,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRiskSettleProductStatus(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMFutureParameter => {
@@ -1075,7 +1075,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMFutureParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMOptionParameter => {
@@ -1083,7 +1083,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMOptionParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMIntraParameter => {
@@ -1091,7 +1091,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMIntraParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMInterParameter => {
@@ -1099,7 +1099,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMInterParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMPortfDefinition => {
@@ -1107,7 +1107,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMPortfDefinition(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMInvestorPortfDef => {
@@ -1115,7 +1115,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMInvestorPortfDef(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorPortfMarginRatio => {
@@ -1123,7 +1123,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorPortfMarginRatio(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorProdSPBMDetail => {
@@ -1131,7 +1131,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorProdSPBMDetail(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorCommoditySPMMMargin => {
@@ -1139,7 +1139,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorCommoditySPMMMargin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorCommodityGroupSPMMMargin => {
@@ -1147,7 +1147,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorCommodityGroupSPMMMargin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPMMInstParam => {
@@ -1155,7 +1155,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPMMInstParam(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPMMProductParam => {
@@ -1163,7 +1163,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPMMProductParam(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQrySPBMAddOnInterParameter => {
@@ -1171,7 +1171,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQrySPBMAddOnInterParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRCAMSCombProductInfo => {
@@ -1179,7 +1179,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRCAMSCombProductInfo(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRCAMSInstrParameter => {
@@ -1187,7 +1187,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRCAMSInstrParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRCAMSIntraParameter => {
@@ -1195,7 +1195,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRCAMSIntraParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRCAMSInterParameter => {
@@ -1203,7 +1203,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRCAMSInterParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRCAMSShortOptAdjustParam => {
@@ -1211,7 +1211,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRCAMSShortOptAdjustParam(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRCAMSInvestorCombPosition => {
@@ -1219,7 +1219,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRCAMSInvestorCombPosition(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorProdRCAMSMargin => {
@@ -1227,7 +1227,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorProdRCAMSMargin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRULEInstrParameter => {
@@ -1235,7 +1235,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRULEInstrParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRULEIntraParameter => {
@@ -1243,7 +1243,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRULEIntraParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryRULEInterParameter => {
@@ -1251,7 +1251,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryRULEInterParameter(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorProdRULEMargin => {
@@ -1259,7 +1259,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorProdRULEMargin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorPortfSetting => {
@@ -1267,7 +1267,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorPortfSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryInvestorInfoCommRec => {
@@ -1275,7 +1275,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryInvestorInfoCommRec(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryCombLeg => {
@@ -1283,7 +1283,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryCombLeg(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspOffsetSetting => {
@@ -1291,7 +1291,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspOffsetSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspCancelOffsetSetting => {
@@ -1299,7 +1299,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspCancelOffsetSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRspEvent::OnRspQryOffsetSetting => {
@@ -1307,7 +1307,7 @@ pub fn cvoid_to_rsp_box(evt: EnumOnRspEvent, param: *const c_void) -> OnRspOptBo
             return OnRspOptBox::OnRspQryOffsetSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
     }
@@ -1319,7 +1319,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnDepthMarketData(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnForQuoteRsp => {
@@ -1327,7 +1327,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnForQuoteRsp(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnOrder => {
@@ -1335,7 +1335,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnTrade => {
@@ -1343,7 +1343,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnTrade(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnInstrumentStatus => {
@@ -1351,7 +1351,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnInstrumentStatus(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnBulletin => {
@@ -1359,7 +1359,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnBulletin(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnTradingNotice => {
@@ -1367,7 +1367,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnTradingNotice(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnErrorConditionalOrder => {
@@ -1375,7 +1375,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnErrorConditionalOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnExecOrder => {
@@ -1383,7 +1383,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnExecOrder(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnQuote => {
@@ -1391,7 +1391,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnQuote(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnCFMMCTradingAccountToken => {
@@ -1399,7 +1399,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnCFMMCTradingAccountToken(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnOptionSelfClose => {
@@ -1407,7 +1407,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnOptionSelfClose(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnCombAction => {
@@ -1415,7 +1415,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnCombAction(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnFromBankToFutureByBank => {
@@ -1423,7 +1423,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnFromBankToFutureByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnFromFutureToBankByBank => {
@@ -1431,7 +1431,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnFromFutureToBankByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnRepealFromBankToFutureByBank => {
@@ -1439,7 +1439,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnRepealFromBankToFutureByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnRepealFromFutureToBankByBank => {
@@ -1447,7 +1447,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnRepealFromFutureToBankByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnFromBankToFutureByFuture => {
@@ -1455,7 +1455,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnFromBankToFutureByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnFromFutureToBankByFuture => {
@@ -1463,7 +1463,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnFromFutureToBankByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnRepealFromBankToFutureByFutureManual => {
@@ -1471,7 +1471,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnRepealFromBankToFutureByFutureManual(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnRepealFromFutureToBankByFutureManual => {
@@ -1479,7 +1479,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnRepealFromFutureToBankByFutureManual(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnQueryBankBalanceByFuture => {
@@ -1487,7 +1487,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnQueryBankBalanceByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnRepealFromBankToFutureByFuture => {
@@ -1495,7 +1495,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnRepealFromBankToFutureByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnRepealFromFutureToBankByFuture => {
@@ -1503,7 +1503,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnRepealFromFutureToBankByFuture(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnOpenAccountByBank => {
@@ -1511,7 +1511,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnOpenAccountByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnCancelAccountByBank => {
@@ -1519,7 +1519,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnCancelAccountByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnChangeAccountByBank => {
@@ -1527,7 +1527,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnChangeAccountByBank(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
         EnumOnRtnEvent::OnRtnOffsetSetting => {
@@ -1535,7 +1535,7 @@ pub fn cvoid_to_rtn_box(evt: EnumOnRtnEvent, param: *const c_void) -> OnRtnOptBo
             return OnRtnOptBox::OnRtnOffsetSetting(if fld.is_null() {
                 None
             } else {
-                Some(Box::new(unsafe { (*fld).clone() }))
+                Some(Box::new(unsafe { *fld }))
             });
         }
     }
