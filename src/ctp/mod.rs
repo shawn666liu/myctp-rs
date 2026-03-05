@@ -7,7 +7,7 @@ pub use generated::*;
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};
 // use simple_error::SimpleError;
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use std::borrow::Cow;
 use std::os::raw::c_int;
 use std::{any, fmt};
@@ -70,11 +70,7 @@ pub fn reduce_comb_flags(flags: &[u8]) -> String {
 }
 
 pub fn maybe_char(c: u8) -> Option<char> {
-    if c != 0u8 {
-        Some(char::from(c))
-    } else {
-        None
-    }
+    if c != 0u8 { Some(char::from(c)) } else { None }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -330,11 +326,7 @@ pub fn set_cstr_from_str_truncate(buffer: &mut [u8], text: &str) {
 }
 
 pub fn normalize_double(d: f64) -> Option<f64> {
-    if d == std::f64::MAX {
-        None
-    } else {
-        Some(d)
-    }
+    if d == std::f64::MAX { None } else { Some(d) }
 }
 
 #[cfg(test)]

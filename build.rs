@@ -60,6 +60,20 @@ fn copy_lib_files() {
     let out_dir = std::env::var("OUT_DIR").unwrap();
     println!("cargo:rustc-link-search=native={}", out_dir);
 
+    let lib = "thostmduserapi_se.lib";
+    let target = Path::new(&out_dir).join(lib);
+    if !target.exists() {
+        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", lib), &target)
+            .expect(&format!("failed to copy {} to outdir", lib));
+    }
+
+    let lib = "thosttraderapi_se.lib";
+    let target = Path::new(&out_dir).join(lib);
+    if !target.exists() {
+        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", lib), &target)
+            .expect(&format!("failed to copy {} to outdir", lib));
+    }
+
     let dll = "thostmduserapi_se.dll";
     let target = Path::new(&out_dir).join(dll);
     if !target.exists() {

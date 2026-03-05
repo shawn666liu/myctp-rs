@@ -5,3 +5,4 @@ cargo run --example test_md
 cargo run --example test_trader  
 ```
 
+需要安装llvm,设置环境变量LIBCLANG_PATH,否则报错找不到clang
