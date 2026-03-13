@@ -25,7 +25,7 @@ impl MDApi {
         use_udp: bool,
         use_multicast: bool,
         product_mode: bool,
-        spi: Box<dyn CtpSpiTrait>,
+        spi: Box<dyn CtpSpiCallback>,
     ) -> Self {
         let flow_path1 = std::ffi::CString::new(flow_path).expect("CString::new failed");
         let flow_path_ptr = flow_path1.into_raw();

@@ -10,12 +10,12 @@ const TRADER_FRONT: &'static str = "tcp://182.254.243.31:30001";
 const BROKER_ID: &'static str = "9999";
 
 struct Spi {}
-impl CtpSpiTrait for Spi {
+impl CtpSpiCallback for Spi {
     fn as_any(&mut self) -> &mut dyn std::any::Any {
         self
     }
 
-    fn on_rsp_event(
+    fn on_rsp_callback(
         &mut self,
         evt: EnumOnRspEvent,
         param: *mut c_void,
@@ -72,7 +72,7 @@ impl CtpSpiTrait for Spi {
         }
 
         // println!(
-        //     "==> on_rsp_event, {:?}, {:#?} req_id {}, last? {}",
+        //     "==> on_rsp_callback, {:?}, {:#?} req_id {}, last? {}",
         //     evt, rsp_result, request_id, is_last
         // );
     }

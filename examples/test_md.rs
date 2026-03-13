@@ -15,12 +15,12 @@ impl Drop for MdSpi {
         println!("MdSpi::drop()");
     }
 }
-impl CtpSpiTrait for MdSpi {
+impl CtpSpiCallback for MdSpi {
     fn as_any(&mut self) -> &mut dyn std::any::Any {
         self
     }
 
-    fn on_rtn_event(&mut self, evt: EnumOnRtnEvent, param: *mut c_void) {
+    fn on_rtn_callback(&mut self, evt: EnumOnRtnEvent, param: *mut c_void) {
         // 如果需要在本线程直接处理，则使用引用的方式，不用复制一次内存
         match cvoid_to_rtn_ref(evt, param) {
             OnRtnOptRef::OnRtnDepthMarketData(fld_opt) => {
@@ -65,7 +65,7 @@ impl CtpSpiTrait for MdSpi {
         // let md = param as *const CThostFtdcDepthMarketDataField;
         // if !md.is_null() {
         //     let md = unsafe { &*md };
-        //     println!("==> on_rtn_event, {:?}, {:?}\n\n", evt, md);
+        //     println!("==> on_rtn_callback, {:?}, {:?}\n\n", evt, md);
         // }
     }
 }

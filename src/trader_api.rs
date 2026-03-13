@@ -20,7 +20,7 @@ impl Drop for TraderApi {
 }
 
 impl TraderApi {
-    pub fn new(flow_path: &str, product_mode: bool, spi: Box<dyn CtpSpiTrait>) -> Self {
+    pub fn new(flow_path: &str, product_mode: bool, spi: Box<dyn CtpSpiCallback>) -> Self {
         let flow_path1 = std::ffi::CString::new(flow_path).unwrap();
         let flow_path_ptr = flow_path1.into_raw();
         let api_ptr = unsafe { TdCreateApi(flow_path_ptr, product_mode) };

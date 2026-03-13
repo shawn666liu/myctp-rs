@@ -24,19 +24,16 @@ fn copy_lib_files() {
     let out_dir = std::env::var("OUT_DIR").unwrap();
     println!("cargo:rustc-link-search=native={}", out_dir);
 
-    let dll = "libthostmduserapi_se.so";
-    let target = Path::new(&out_dir).join(dll);
-    if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/linux_x64/{}", dll), &target)
-            .expect(&format!("failed to copy {} to outdir", dll));
+    let dlls = ["libthostmduserapi_se.so", "libthosttraderapi_se.so"];
+    for dll in dlls {
+        let target = Path::new(&out_dir).join(dll);
+        if !target.exists() {
+            std::fs::copy(format!("./ftdc2c_ctp/api/linux_x64/{}", dll), &target)
+                .expect(&format!("failed to copy {} to outdir", dll));
+        }
     }
 
-    let dll = "libthosttraderapi_se.so";
-    let target = Path::new(&out_dir).join(dll);
-    if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/linux_x64/{}", dll), &target)
-            .expect(&format!("failed to copy {} to outdir", dll));
-    }
+    println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
 }
 
 #[cfg(windows)]
@@ -60,32 +57,18 @@ fn copy_lib_files() {
     let out_dir = std::env::var("OUT_DIR").unwrap();
     println!("cargo:rustc-link-search=native={}", out_dir);
 
-    let lib = "thostmduserapi_se.lib";
-    let target = Path::new(&out_dir).join(lib);
-    if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", lib), &target)
-            .expect(&format!("failed to copy {} to outdir", lib));
-    }
-
-    let lib = "thosttraderapi_se.lib";
-    let target = Path::new(&out_dir).join(lib);
-    if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", lib), &target)
-            .expect(&format!("failed to copy {} to outdir", lib));
-    }
-
-    let dll = "thostmduserapi_se.dll";
-    let target = Path::new(&out_dir).join(dll);
-    if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", dll), &target)
-            .expect(&format!("failed to copy {} to outdir", dll));
-    }
-
-    let dll = "thosttraderapi_se.dll";
-    let target = Path::new(&out_dir).join(dll);
-    if !target.exists() {
-        std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", dll), &target)
-            .expect(&format!("failed to copy {} to outdir", dll));
+    let files = [
+        "thostmduserapi_se.lib",
+        "thostmduserapi_se.dll",
+        "thosttraderapi_se.lib",
+        "thosttraderapi_se.dll",
+    ];
+    for file in files {
+        let target = Path::new(&out_dir).join(file);
+        if !target.exists() {
+            std::fs::copy(format!("./ftdc2c_ctp/api/win_x64/{}", file), &target)
+                .expect(&format!("failed to copy {} to outdir", file));
+        }
     }
 
     // println!(
