@@ -45,15 +45,21 @@ pub fn new_qry_instrument(inst: &str, xchg: &str) -> CThostFtdcQryInstrumentFiel
     f
 }
 
+/// class_type可选项:<br>
+/// THOST_FTDC_INS_FUTURE,<br>
+/// THOST_FTDC_INS_OPTION,<br>
+/// THOST_FTDC_INS_COMBO,<br>
+/// THOST_FTDC_INS_ALL
 pub fn new_qry_classified_instrument(
     inst: &str,
     xchg: &str,
+    class_type: TThostFtdcClassTypeType,
 ) -> CThostFtdcQryClassifiedInstrumentField {
     let mut f: CThostFtdcQryClassifiedInstrumentField = Default::default();
     set_cstr_from_str_truncate(&mut f.InstrumentID, inst);
     set_cstr_from_str_truncate(&mut f.ExchangeID, xchg);
     f.TradingType = THOST_FTDC_TD_TRADE;
-    f.ClassType = THOST_FTDC_INS_FUTURE;
+    f.ClassType = class_type;
     f
 }
 
