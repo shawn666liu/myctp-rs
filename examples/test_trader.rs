@@ -125,7 +125,7 @@ fn main() {
     };
     std::thread::sleep(std::time::Duration::from_secs(2));
     last_request_id += 1;
-    match trader_api.req_qry_product(&new_qry_product(""), last_request_id) {
+    match trader_api.req_qry_product(&new_qry_product(THOST_FTDC_PC_Futures), last_request_id) {
         Ok(()) => println!("req_qry_product ok"),
         Err(err) => println!("req_qry_product err: {:?}", err),
     };

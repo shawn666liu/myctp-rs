@@ -69,9 +69,18 @@ pub fn new_qry_exchange(pattern: &str) -> CThostFtdcQryExchangeField {
     f
 }
 
-pub fn new_qry_product(pattern: &str) -> CThostFtdcQryProductField {
+/// class_type可选项:<br>
+/// THOST_FTDC_PC_Futures,<br>
+/// THOST_FTDC_PC_Options,<br>
+/// THOST_FTDC_PC_Combination,<br>
+/// THOST_FTDC_PC_Spot,<br>
+/// THOST_FTDC_PC_EFP,<br>
+/// THOST_FTDC_PC_SpotOption,<br>
+/// THOST_FTDC_PC_TAS,<br>
+/// THOST_FTDC_PC_MI
+pub fn new_qry_product(class_type: TThostFtdcProductClassType) -> CThostFtdcQryProductField {
     let mut f: CThostFtdcQryProductField = Default::default();
-    set_cstr_from_str_truncate(&mut f.ProductID, pattern);
+    f.ProductClass = class_type;
     f
 }
 
